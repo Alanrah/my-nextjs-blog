@@ -1,3 +1,30 @@
 {
-  "extends": "next/core-web-vitals"
+    "extends": [
+        "next/core-web-vitals",
+        "eslint:recommended",
+        "eslint-config-prettier",
+        "plugin:prettier/recommended",
+        "prettier"
+    ],
+    "rules": {
+        "quotes": [
+            "warn",
+            "single",
+            {
+                "avoidEscape": true
+            }
+        ],
+        "indent": ["error", 4],
+        "semi": ["error", "always"],
+        "comma-dangle": [
+            "error",
+            {
+                "arrays": "never",
+                "objects": "never",
+                "imports": "never",
+                "exports": "never",
+                "functions": "never"
+            }
+        ]
+    }
 }
