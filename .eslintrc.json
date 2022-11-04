@@ -16,15 +16,6 @@
         ],
         "indent": ["error", 4],
         "semi": ["error", "always"],
-        "comma-dangle": [
-            "error",
-            {
-                "arrays": "never",
-                "objects": "never",
-                "imports": "never",
-                "exports": "never",
-                "functions": "never"
-            }
-        ]
+        "no-unused-vars": "warn"
     }
 }

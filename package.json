@@ -9,11 +9,13 @@
     "lint": "next lint --fix"
   },
   "dependencies": {
+    "mockjs": "^1.1.0",
     "next": "13.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@types/mockjs": "^1.0.7",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
@@ -40,9 +42,9 @@
       "eslint --cache --fix"
     ],
     "*.{css,scss}": [
-        "prettier --write",
-        "stylelint --fix"
-      ],
+      "prettier --write",
+      "stylelint --fix"
+    ],
     "*.{png,jpeg,jpg,gif,svg}": [
       "imagemin-lint-staged",
       "git add"

@@ -38,7 +38,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 # 笔记
 ## 2.1
-/pages/_app.tsx 是全局的入口
-/pages/index.tsx 是首页
-/pages/api 是接口，nextjs是一个全栈的框架
+* /pages/_app.tsx 是全局的入口
+* /pages/index.tsx 是首页
+* /pages/api 是接口，nextjs是一个全栈的框架
 ## 2.2
