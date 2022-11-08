@@ -1,0 +1,20 @@
+.navbar {
+    height: 60px;
+    background-color: aqua;
+    border-bottom: 1px solid #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.logArea {
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: 60px;
+}
+.linkArea {
+    font-size: 18px;
+    a {
+        margin-right: 60px;
+    }
+    
+}

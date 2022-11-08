@@ -4,5 +4,7 @@
     "tabWidth": 4,
     "printWidth": 120,
     "bracketSpacing": false,
-    "trailingComma": "all"
+    "trailingComma": "all",
+    "endOfLine": "auto",
+    "arrowParens": "always"
 }

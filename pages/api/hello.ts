@@ -17,6 +17,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
                     address: Random.county(),
                 },
             ],
+            env: process.env.NODE_ENV,
         }),
     );
 }
