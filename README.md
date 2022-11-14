@@ -35,6 +35,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 # todo
 登录用一下图形验证
+蓝牙打印，扫二维码
 
 # 遇到的问题
 * 1.Delete ␍ eslint(prettier/prettier)

@@ -26,6 +26,9 @@ a {
 * {
     box-sizing: border-box;
 }
+.loginArea .ant-modal-footer {
+    display: none;
+}
 
 @media (prefers-color-scheme: dark) {
     html {
@@ -44,7 +47,7 @@ a {
     }
 
     body {
-        background: #eee;
+        background: aliceblue;
         color: black;
     }
 }

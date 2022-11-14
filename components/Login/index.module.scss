@@ -1,0 +1,31 @@
+.loginArea {}
+.loginBox{
+    .phoneInput {
+        width: 100%;
+        border-radius: 5px;
+    }
+    .verifyInput {
+        width: 100%; 
+        margin: 10px 0px;
+        border-radius: 5px;
+    }
+}
+.verifyCodeArea{
+    position: relative;
+}
+.verifyCode{
+    cursor: pointer;
+    color: #1e80ff;
+    position:absolute;
+    top: 15px;
+    right: 10px;
+    
+}
+.loginBtn{
+    width: 100%;
+    margin: 10px auto;
+}
+.otherLogin{
+    cursor: pointer;
+    color: #1e80ff;
+}
