@@ -1,6 +1,3 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import { fileURLToPath } from 'url';
 import styles from './index.module.scss';
 import { Input, Modal, Button, message } from 'antd';
 import { ChangeEvent, useState } from 'react';
@@ -35,14 +32,30 @@ const Login = (props: IProps) => {
             templateId: 1,
         }).then(res => {
             if(res.code === 0) {
-                console.log(res);
                 setIsShowVerifyCode(true);
             } else {
                 message.error(res.msg || '未知错误');
             }
         });
     };
-    const handleLogin = () => { };
+    const handleLogin = () => {
+        if(!form.phone || !form.verify) {
+            message.error('请输入手机号和验证码');
+            return;
+        }
+        requestInstance.post<{phone: string, verifyCode: string}, BaseDataResponse<any>>('/api/user/login', {...form}).then(res => {
+            if(res.code === 0) {
+                message.success('登陆成功');
+                setForm({
+                    phone: '',
+                    verify: '',
+                })
+                handleClose();
+            } else {
+                message.error(res.msg || '登录失败');
+            }
+        });
+    };
     const handleOAuthGithub = () => { };
     const handleOAuthKwai = () => { };
     const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -87,8 +100,8 @@ const Login = (props: IProps) => {
                             onChange={handleFormChange}
                         ></Input>
                         <span className={styles.verifyCode}>
-                            {isShowVerifyCode ? <CountDown time={10} onEnd={handleCountDownEnd}></CountDown> : <span onClick={getVerifyCode}>获取验证码</span>}
-                            
+                            {isShowVerifyCode ? <CountDown time={60} onEnd={handleCountDownEnd}></CountDown> : <span onClick={getVerifyCode}>获取验证码</span>}
+
                         </span>
                     </div>
                     <Button className={styles.loginBtn} onClick={handleLogin} type="primary">

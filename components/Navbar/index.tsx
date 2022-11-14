@@ -35,6 +35,7 @@ const Navbar = () => {
             </section>
             <section className={styles.operationArea}>
                 <Button onClick={handleGoEditorPage}>写文章</Button>
+                {/* todo 已经登陆了，就不需要显示登录按钮了 */}
                 <Button type="primary" onClick={handleLogin}>登录</Button>
             </section>
             <Login isShow={isShowLogin} onClose={handleClose}></Login>
