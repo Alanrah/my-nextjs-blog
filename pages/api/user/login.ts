@@ -6,8 +6,14 @@ import { ISession } from 'pages/api/index';
 import { LOGIN_VERIFY_EQUAL_FAIL, LOGIN_VERIFY_PHONE_FAIL, LOGIN_VERIFY_EXPIRED } from 'utils/err-code';
 import {PhoneReg} from 'utils/reg';
 import { ExpireMinutes } from 'utils/sms';
+import getDataSource from 'db/index'
+import { User, UserAuth } from "db/entity";
 
 async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<any>>) {
+    const db = await getDataSource();
+    const x = await db.getRepository(UserAuth).find()
+    console.log('todo',x );
+
     const session: ISession = req.session; // withIronSessionApiRoute 会自动注入
     const { phone = '', verify = '' } = req.body;
     const verifyCode = session.verifyCode;
@@ -40,5 +46,5 @@ async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<
         });
     }
 }
-// VQM26S99Eu2I19ihfUTchcIE0Q0b7cgB
+
 export default withIronSessionApiRoute(login, ironOptions);
