@@ -14,6 +14,6 @@ export class UserAuth extends CommonEntity {
     credential: string | undefined;
 
     @ManyToOne(() => User, { cascade: true })
-    @JoinColumn({ name: 'user_id', referencedColumnName: 'id' }) // 外键的名字
-    userId: User | undefined; // todo 怎么把这个变量name设置成userId呢，find时候打印的数据里面没有userId这个字段
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id' }) // 'id' 是user对应的列的名字
+    user: User | undefined; // 根据 user_id查到的user对象，名称就是 user
 }

@@ -1,0 +1,8 @@
+{
+    "presets": ["next/babel"],
+    "plugins": [
+        "babel-plugin-transform-typescript-metadata", // 支持tsconfig的emitDecoratorMetadata ， https://babeljs.io/docs/en/babel-plugin-transform-typescript#typescript-compiler-options
+        ["@babel/plugin-proposal-decorators", {"version": "legacy"}], // https://babel.dev/docs/en/babel-plugin-proposal-decorators
+        "@babel/plugin-proposal-class-properties"
+    ]
+}

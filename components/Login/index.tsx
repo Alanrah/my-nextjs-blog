@@ -43,7 +43,7 @@ const Login = (props: IProps) => {
             message.error('请输入手机号和验证码');
             return;
         }
-        requestInstance.post<{phone: string, verifyCode: string}, BaseDataResponse<any>>('/api/user/login', {...form}).then(res => {
+        requestInstance.post<{phone: string, verifyCode: string}, BaseDataResponse<any>>('/api/user/login', {...form, identityType: 'phone'}).then(res => {
             if(res.code === 0) {
                 message.success('登陆成功');
                 setForm({
