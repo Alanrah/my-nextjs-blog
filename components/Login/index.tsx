@@ -3,6 +3,7 @@ import { Input, Modal, Button, message } from 'antd';
 import { ChangeEvent, useState } from 'react';
 import CountDown from 'components/CountDown';
 import requestInstance from 'service/fetch';
+import { useStore } from 'store';
 
 interface IProps {
     isShow: boolean;
@@ -10,6 +11,8 @@ interface IProps {
 }
 
 const Login = (props: IProps) => {
+    const store = useStore();
+
     const { isShow = false, onClose } = props;
     const [isShowVerifyCode, setIsShowVerifyCode] = useState(false);
     const [form, setForm] = useState({
@@ -45,11 +48,13 @@ const Login = (props: IProps) => {
         }
         requestInstance.post<{phone: string, verifyCode: string}, BaseDataResponse<any>>('/api/user/login', {...form, identityType: 'phone'}).then(res => {
             if(res.code === 0) {
-                message.success('登陆成功');
+                // 登陆成功
+                message.success(res.msg);
+                store.user.setUserInfo(res?.data);
                 setForm({
                     phone: '',
                     verify: '',
-                })
+                });
                 handleClose();
             } else {
                 message.error(res.msg || '登录失败');

@@ -20,7 +20,7 @@ interface SMS_Type {
 
 // 测试收到的短信：【云通讯】您使用的是云通讯短信模板，您的验证码是9735，请于5分钟内正确输入
 // https://doc.yuntongxun.com/p/5a533de33b8496dd00dce07c
-async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<SMS_Type>>) {
+async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<SMS_Type & {code: number}>>) {
     const session: ISession = req.session; // withIronSessionApiRoute 会自动注入
     const { to = '', templateId = '1' } = req.body;
     const nowDate = format(new Date(), 'yyyyMMddHHmmss');
@@ -31,18 +31,25 @@ async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataR
     // 该项目是个练习项目，保存到本地即可
     const verifyCode = Math.floor(Math.random() * (9999 - 1000)) + 1000;
     const expireMinutes = ExpireMinutes;
-    // "statusCode":"000000","templateSMS":{"smsMessageSid":"8a483be8ec344a5ea2c857a8038fc095","dateCreated":"20221111163118"}
-    const response = await requestInstance.post<any, SMS_Type>(url, {
-        to,
-        templateId,
-        appId: SmsAppId,
-        datas: [verifyCode, expireMinutes],
-    }, {
-        headers: {
-            Authorization,
-        }
-    });
-    const { statusCode, templateSMS, statusMsg } = response;
+    // todo 开发环境就不请求验证码了
+    let response = {
+        "statusCode":"000000",
+        "templateSMS":{"smsMessageSid":"8a483be8ec344a5ea2c857a8038fc095","dateCreated":"20221111163118"},
+    }
+    if(process.env.NODE_ENV !== 'development') {
+        response = await requestInstance.post<any, SMS_Type>(url, {
+            to,
+            templateId,
+            appId: SmsAppId,
+            datas: [verifyCode, expireMinutes],
+        }, {
+            headers: {
+                Authorization,
+            }
+        });
+    }
+
+    const { statusCode, templateSMS, statusMsg = '' } = response;
     if (statusCode === '000000') {
         session.verifyCode = verifyCode;
         session.verifyExpireDate = new Date();
@@ -51,14 +58,20 @@ async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataR
         res.status(200).json({
             code: 0,
             msg: '验证码发送成功',
-            data: response,
+            data: {
+                code: verifyCode,
+                ...response
+            },
         });
     } else {
         res.status(200).json({
             // @ts-ignore
             code: statusCode,
             msg: statusMsg || '验证码请求失败，请重试',
-            data: response,
+            data: {
+                code: verifyCode,
+                ...response
+            },
         });
     }
 

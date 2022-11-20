@@ -2,22 +2,22 @@ import { PrimaryGeneratedColumn, Column, BeforeUpdate, BeforeInsert } from 'type
 
 export class CommonEntity {
     @PrimaryGeneratedColumn({ type: 'bigint', name: 'id', unsigned: true })
-    readonly id!: string;
+    readonly id!: number;
 
-    @Column('bigint', { name: 'create_time' })
-    createTime!: string;
+    @Column('datetime', { name: 'create_time' })
+    createTime!: Date;
 
-    @Column('bigint', { name: 'update_time' })
-    updateTime!: string;
+    @Column('datetime', { name: 'update_time' })
+    updateTime!: Date;
 
     @BeforeUpdate()
     setupdateTime() {
-        this.updateTime = String(Date.now());
+        this.updateTime = new Date();
     }
 
     @BeforeInsert()
     setTimeAtCreate() {
-        this.createTime = String(Date.now());
-        this.updateTime = String(Date.now());
+        this.createTime = new Date();
+        this.updateTime = new Date();
     }
 }

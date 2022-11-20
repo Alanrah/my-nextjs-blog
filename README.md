@@ -38,9 +38,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 蓝牙打印，扫二维码
 
 # 遇到的问题
-* 1.Delete ␍ eslint(prettier/prettier)
+* 1. Delete ␍ eslint(prettier/prettier)
     mac系统换行符为LF，windows系统换行符为CRLF，git代码仓库中的换行符为LF。在windows  git clone 过程，git将所有文件换行符（LF）更换成本地换行符(CRLF)了，而 eslint 检查工具要求换行符为 LF ，因此有了这个报错。
-
+* 2. api 怎么debug
 # 笔记
 ## 2.1
 * /pages/_app.tsx 是全局的入口
@@ -50,6 +50,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ### 路由类型
 * index路由 /pages/blog/index.tsx --> /blog
 * 嵌套路由： /pages/blog/user/index.tsx --> /blog/user
-* 动态路由： /pages/blog/[slug]/index.tsx --> /blog/helloworld,  pages/posts/[id].js --> posts/1 
+* 动态路由： /pages/blog/[slug]/index.tsx --> /blog/helloworld,  pages/posts/[id].js --> posts/1
 * Catch all routes: pages/post/[...slug].js --> /post/a ， pages/post/[[...slug]].js -->  /post 或者 /post/a 或者 /post/a/b
+## 4.13
+* mobx 类似于 vue 中的 mobx；[ https://mobx.js.org/react-integration.html]
 
