@@ -25,41 +25,48 @@ const Login = (props: IProps) => {
         onClose();
     };
     const getVerifyCode = () => {
-        if(!form?.phone) {
+        if (!form?.phone) {
             message.warning('请输入手机号');
             return;
         }
         // 发送短信验证码
-        requestInstance.post<{to: string, templateId: number}, BaseDataResponse<string>>('/api/user/sendVerifyCode', {
-            to: form?.phone,
-            templateId: 1,
-        }).then(res => {
-            if(res.code === 0) {
-                setIsShowVerifyCode(true);
-            } else {
-                message.error(res.msg || '未知错误');
-            }
-        });
+        requestInstance
+            .post<{ to: string; templateId: number }, BaseDataResponse<string>>('/api/user/sendVerifyCode', {
+                to: form?.phone,
+                templateId: 1,
+            })
+            .then((res) => {
+                if (res.code === 0) {
+                    setIsShowVerifyCode(true);
+                } else {
+                    message.error(res.msg || '未知错误');
+                }
+            });
     };
     const handleLogin = () => {
-        if(!form.phone || !form.verify) {
+        if (!form.phone || !form.verify) {
             message.error('请输入手机号和验证码');
             return;
         }
-        requestInstance.post<{phone: string, verifyCode: string}, BaseDataResponse<any>>('/api/user/login', {...form, identityType: 'phone'}).then(res => {
-            if(res.code === 0) {
-                // 登陆成功
-                message.success(res.msg);
-                store.user.setUserInfo(res?.data);
-                setForm({
-                    phone: '',
-                    verify: '',
-                });
-                handleClose();
-            } else {
-                message.error(res.msg || '登录失败');
-            }
-        });
+        requestInstance
+            .post<{ phone: string; verifyCode: string }, BaseDataResponse<any>>('/api/user/login', {
+                ...form,
+                identityType: 'phone',
+            })
+            .then((res) => {
+                if (res.code === 0) {
+                    // 登陆成功
+                    message.success(res.msg);
+                    store.user.setUserInfo(res?.data);
+                    setForm({
+                        phone: '',
+                        verify: '',
+                    });
+                    handleClose();
+                } else {
+                    message.error(res.msg || '登录失败');
+                }
+            });
     };
     const handleOAuthGithub = () => { };
     const handleOAuthKwai = () => { };
@@ -72,7 +79,7 @@ const Login = (props: IProps) => {
     };
     const handleCountDownEnd = () => {
         setIsShowVerifyCode(false);
-    }
+    };
 
     return isShow ? (
         <Modal
@@ -105,8 +112,11 @@ const Login = (props: IProps) => {
                             onChange={handleFormChange}
                         ></Input>
                         <span className={styles.verifyCode}>
-                            {isShowVerifyCode ? <CountDown time={60} onEnd={handleCountDownEnd}></CountDown> : <span onClick={getVerifyCode}>获取验证码</span>}
-
+                            {isShowVerifyCode ? (
+                                <CountDown time={60} onEnd={handleCountDownEnd}></CountDown>
+                            ) : (
+                                <span onClick={getVerifyCode}>获取验证码</span>
+                            )}
                         </span>
                     </div>
                     <Button className={styles.loginBtn} onClick={handleLogin} type="primary">

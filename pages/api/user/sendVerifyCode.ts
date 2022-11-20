@@ -1,26 +1,26 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { SmsAccountSID, SmsAuthToken, SmsTestBaseUrl, SmsAppId } from 'utils/sms';
-import md5 from "md5";
+import md5 from 'md5';
 import { format } from 'date-fns';
 import { encode } from 'js-base64';
 import requestInstance from 'service/fetch';
-import { withIronSessionApiRoute } from "iron-session/next";
+import { withIronSessionApiRoute } from 'iron-session/next';
 import { ironOptions } from 'config/index';
 import { ISession } from 'pages/api/index';
 import { ExpireMinutes } from 'utils/sms';
 
 interface SMS_Type {
-    statusCode: string,
+    statusCode: string;
     templateSMS: {
-        dateCreated: string,
-        smsMessageSid: string,
-    },
-    statusMsg?: string,
+        dateCreated: string;
+        smsMessageSid: string;
+    };
+    statusMsg?: string;
 }
 
 // 测试收到的短信：【云通讯】您使用的是云通讯短信模板，您的验证码是9735，请于5分钟内正确输入
 // https://doc.yuntongxun.com/p/5a533de33b8496dd00dce07c
-async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<SMS_Type & {code: number}>>) {
+async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<SMS_Type & { code: number }>>) {
     const session: ISession = req.session; // withIronSessionApiRoute 会自动注入
     const { to = '', templateId = '1' } = req.body;
     const nowDate = format(new Date(), 'yyyyMMddHHmmss');
@@ -33,20 +33,24 @@ async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataR
     const expireMinutes = ExpireMinutes;
     // todo 开发环境就不请求验证码了
     let response = {
-        "statusCode":"000000",
-        "templateSMS":{"smsMessageSid":"8a483be8ec344a5ea2c857a8038fc095","dateCreated":"20221111163118"},
-    }
-    if(process.env.NODE_ENV !== 'development') {
-        response = await requestInstance.post<any, SMS_Type>(url, {
-            to,
-            templateId,
-            appId: SmsAppId,
-            datas: [verifyCode, expireMinutes],
-        }, {
-            headers: {
-                Authorization,
-            }
-        });
+        statusCode: '000000',
+        templateSMS: { smsMessageSid: '8a483be8ec344a5ea2c857a8038fc095', dateCreated: '20221111163118' },
+    };
+    if (process.env.NODE_ENV !== 'development') {
+        response = await requestInstance.post<any, SMS_Type>(
+            url,
+            {
+                to,
+                templateId,
+                appId: SmsAppId,
+                datas: [verifyCode, expireMinutes],
+            },
+            {
+                headers: {
+                    Authorization,
+                },
+            },
+        );
     }
 
     const { statusCode, templateSMS, statusMsg = '' } = response;
@@ -60,7 +64,7 @@ async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataR
             msg: '验证码发送成功',
             data: {
                 code: verifyCode,
-                ...response
+                ...response,
             },
         });
     } else {
@@ -70,10 +74,9 @@ async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataR
             msg: statusMsg || '验证码请求失败，请重试',
             data: {
                 code: verifyCode,
-                ...response
+                ...response,
             },
         });
     }
-
 }
 export default withIronSessionApiRoute(sedVerifyCode, ironOptions);

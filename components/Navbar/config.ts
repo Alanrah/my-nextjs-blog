@@ -10,5 +10,5 @@ export const Navs = [
     {
         label: '标签',
         value: '/tag',
-    }
-]
+    },
+];
