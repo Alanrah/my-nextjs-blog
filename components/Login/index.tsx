@@ -4,6 +4,8 @@ import { ChangeEvent, useState } from 'react';
 import CountDown from 'components/CountDown';
 import requestInstance from 'service/fetch';
 import { useStore } from 'store';
+// 使用useStore的组件，都用  observer 包裹一下，保证响应式
+import { observer } from 'mobx-react-lite';
 
 interface IProps {
     isShow: boolean;
@@ -21,7 +23,8 @@ const Login = (props: IProps) => {
     });
 
     const handleClose = () => {
-        // isShow 怎么修改prop属性并通知父组件
+        // 问题：isShow 怎么修改prop属性并通知父组件
+        // 直接把父组件的方法传过来
         onClose();
     };
     const getVerifyCode = () => {
@@ -68,7 +71,14 @@ const Login = (props: IProps) => {
                 }
             });
     };
+    // 问题 oauth2.0 的解释
+    // https://ruanyifeng.com/blog/2019/04/oauth_design.html oauth2.0 的一个简单的解释
+    // https://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html oauth2.0 的四种方式
+    // https://www.ruanyifeng.com/blog/2019/04/github-oauth.html  阮一峰 GitHub OAuth 第三方登录示例教程
+    // 在github 注册 app 的信息 https://github.com/settings/applications/2046992
+    // ClientID dba4a034e98bdfa6ca78  ClientSecrets  cb814162d8e7849d3a4a069c114c09a1761d7246
     const handleOAuthGithub = () => { };
+    // https://open.kuaishou.com/platform/openApi?menu=13 快手第三方登录文档
     const handleOAuthKwai = () => { };
     const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e?.target;
@@ -125,9 +135,9 @@ const Login = (props: IProps) => {
                     <div className={styles.otherLogin} onClick={handleOAuthGithub}>
                         使用 Github 登录
                     </div>
-                    <div className={styles.otherLogin} onClick={handleOAuthKwai}>
+                    {/* <div className={styles.otherLogin} onClick={handleOAuthKwai}>
                         使用 快手 登录
-                    </div>
+                    </div> */}
                     <div className={styles.loginPrivacy}>
                         注册登录即表示同意{' '}
                         <a href="https://moco.imooc.com/privacy.html" target="_blank" rel="noreferrer">
@@ -140,4 +150,4 @@ const Login = (props: IProps) => {
     ) : null;
 };
 
-export default Login;
+export default observer(Login);

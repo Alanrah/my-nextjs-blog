@@ -11,7 +11,7 @@
  Target Server Version : 80030
  File Encoding         : 65001
 
- Date: 17/11/2022 11:13:39
+ Date: 17/11/2022 17:39:57
 */
 
 SET NAMES utf8mb4;
@@ -27,14 +27,14 @@ CREATE TABLE `users`  (
   `avatar` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   `job` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   `introduce` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `update_time` datetime NULL DEFAULT NULL,
-  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` bigint NULL DEFAULT NULL,
+  `create_time` bigint NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, '雅茹', 'https://p4.a.yximgs.com/uhead/AB/2019/07/03/09/BMjAxOTA3MDMwOTU4NTlfOTY4MTg1NjI4XzJfaGQ5NjJfOTU=_s.jpg', NULL, NULL, '2022-11-16 22:56:11', '2022-11-16 22:56:05');
+INSERT INTO `users` VALUES (3, '用户_5307', 'https://p4.a.yximgs.com/uhead/AB/2019/07/03/09/BMjAxOTA3MDMwOTU4NTlfOTY4MTg1NjI4XzJfaGQ5NjJfOTU=_s.jpg', '未知', '未知', 1668677899113, 1668677899113);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -8,14 +8,16 @@ interface IProps {
     children: ReactElement,
 };
 
-enableStaticRendering(true);
+// 判断当前是否为客户端的 process.browser, 但是已经被 deprecated — Use typeof window instead
+// ssr 环境数据是静态的，所以不需要动态响应
+enableStaticRendering(typeof window === 'undefined');
 
 // createContext 防止父子组件频繁向下传递数据，便于深层级的子组件获取数据，可以在子组件任何地方获取context下面的数据
 const StoreContext = createContext({});
 
 export const StoreProvider = ({initialValue, children}: IProps) => {
     // createStore({initialValue}) 类型是 () => IStore
-    const store: IStore = useLocalObservable(createStore({initialValue}));
+    const store: IStore = useLocalObservable(createStore(initialValue));
     return (
         <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
     )

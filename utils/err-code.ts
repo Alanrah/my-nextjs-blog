@@ -7,3 +7,5 @@ export const LOGIN_VERIFY_PHONE_FAIL = 1002;
 
 // 注册 - 写入数据库失败
 export const REGISTER_SAVE_FAIL = 1003;
+// 退出登录-失败
+export const LOGOUT_FAIL = 1004;

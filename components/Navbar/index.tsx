@@ -2,11 +2,13 @@ import { Navs } from './config';
 import Link from 'next/link';
 import styles from './index.module.scss';
 import { useRouter } from 'next/router';
-import { Button, Dropdown, Avatar, Menu } from 'antd';
+import { Button, Dropdown, Avatar, Menu, message } from 'antd';
 import { LogoutOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import Login from 'components/Login';
 import { useStore } from 'store';
+import requestInstance from 'service/fetch';
+import { observer } from 'mobx-react-lite';
 
 const Navbar = () => {
     const store = useStore();
@@ -22,10 +24,17 @@ const Navbar = () => {
     const handleClose = () => {
         setIsShowLogin(false);
     };
-    const handleLogout = () => {
-        store.user.setUserInfo({});
-        console.log(store.user);
-        // todo 非响应式的
+    const handleLogout = async() => {
+        const res = await requestInstance.post<null, BaseDataResponse<null>>('/api/user/logout');
+        if(res.code === 0) {
+            store.user.setUserInfo({});
+            // 问题：为什么设置了直接{}是非响应式的？ 
+            // 因为 NavBar组件不是响应式的,想要属性值跟着组件一起响应式,需要用 mobx的observer把组件包裹起来
+            // 当 mobx store里面数据变化时，NavBar也会重新渲染
+            // 再就是 enableStaticRendering 设置为true，浏览器端的数据变化也不会响应，需要将 enableStaticRendering 置为 enableStaticRendering(typeof window === 'undefined')
+        } else {
+            message.error(res.msg || '退出登录失败，请重试');
+        }
     };
     const handleProfile = () => {
         // todo 去个人主页
@@ -69,4 +78,4 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+export default observer(Navbar);

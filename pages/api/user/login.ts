@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+// https://www.npmjs.com/package/next-cookie 同构库，node和前端都可以使用，和axios一样
+import { Cookie } from 'next-cookie';
 import { differenceInSeconds, parseISO } from 'date-fns';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { ironOptions } from 'config/index';
@@ -12,12 +14,15 @@ import {
 import { PhoneReg } from 'utils/reg';
 import { ExpireMinutes } from 'utils/sms';
 import { DefaultAvatar } from 'utils/const';
+import {setCookie} from 'utils/cookie';
 import getDataSource from 'db/index';
 import { User, UserAuth } from 'db/entity';
 
 async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<any>>) {
     const db = await getDataSource();
     const userAuthRepo = db.getRepository(UserAuth);
+
+    const cookie = Cookie.fromApiRoute(req, res);
 
     const session: ISession = req.session; // withIronSessionApiRoute 会自动注入
     const { phone = '', verify = '', identityType = 'phone' } = req.body;
@@ -59,12 +64,13 @@ async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<
             try {
                 const userAuthSaveRes = await userAuthRepo.save(userAuthRecord);
 
-                // 保存登录态
+                // 保存登录态 将用户信息存在了后端的session
                 const user = userAuthSaveRes.user;
                 const { id, nickname, avatar } = user as User;
                 session.userId = id;
                 session.nickname = nickname;
                 await session.save();
+                setCookie(cookie, {userId: id, nickname, avatar});
 
                 res.status(200).json({
                     code: 0,
@@ -91,6 +97,7 @@ async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<
             session.userId = id;
             session.nickname = nickname;
             await session.save();
+            setCookie(cookie, {userId: id, nickname, avatar});
 
             res.status(200).json({
                 code: 0,
