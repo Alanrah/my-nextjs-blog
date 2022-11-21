@@ -9,3 +9,5 @@ export const LOGIN_VERIFY_PHONE_FAIL = 1002;
 export const REGISTER_SAVE_FAIL = 1003;
 // 退出登录-失败
 export const LOGOUT_FAIL = 1004;
+// 登录-github oauth 注册失败
+export const GITHUB_REGISTER_SAVE_FAIL = 1005;

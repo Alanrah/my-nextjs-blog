@@ -69,6 +69,7 @@ async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<
                 const { id, nickname, avatar } = user as User;
                 session.userId = id;
                 session.nickname = nickname;
+                session.avatar = avatar;
                 await session.save();
                 setCookie(cookie, {userId: id, nickname, avatar});
 
@@ -96,6 +97,7 @@ async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<
             const { id, nickname, avatar } = user as User;
             session.userId = id;
             session.nickname = nickname;
+            session.avatar = avatar;
             await session.save();
             setCookie(cookie, {userId: id, nickname, avatar});
 

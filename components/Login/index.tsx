@@ -6,6 +6,7 @@ import requestInstance from 'service/fetch';
 import { useStore } from 'store';
 // 使用useStore的组件，都用  observer 包裹一下，保证响应式
 import { observer } from 'mobx-react-lite';
+import { GithubCallbackUrl } from 'utils/const';
 
 interface IProps {
     isShow: boolean;
@@ -76,8 +77,9 @@ const Login = (props: IProps) => {
     // https://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html oauth2.0 的四种方式
     // https://www.ruanyifeng.com/blog/2019/04/github-oauth.html  阮一峰 GitHub OAuth 第三方登录示例教程
     // 在github 注册 app 的信息 https://github.com/settings/applications/2046992
-    // ClientID dba4a034e98bdfa6ca78  ClientSecrets  cb814162d8e7849d3a4a069c114c09a1761d7246
-    const handleOAuthGithub = () => { };
+    const handleOAuthGithub = () => {
+        window.open(GithubCallbackUrl);
+    };
     // https://open.kuaishou.com/platform/openApi?menu=13 快手第三方登录文档
     const handleOAuthKwai = () => { };
     const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
