@@ -10,7 +10,7 @@ interface IProps {
 }
 export default function App({initialValue, Component, pageProps}: IProps) {
     const renderLayout = () => {
-        if(!Component.layout) {
+        if(Component.layout === null) {
             return <Component {...pageProps} />;
         } else {
             return (
