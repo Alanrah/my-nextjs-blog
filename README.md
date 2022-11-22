@@ -53,5 +53,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 * 动态路由： /pages/blog/[slug]/index.tsx --> /blog/helloworld,  pages/posts/[id].js --> posts/1
 * Catch all routes: pages/post/[...slug].js --> /post/a ， pages/post/[[...slug]].js -->  /post 或者 /post/a 或者 /post/a/b
 ## 4.13
-* mobx 类似于 vue 中的 mobx；[ https://mobx.js.org/react-integration.html]
+* mobx 类似于 vue 中的 vuex；[ https://mobx.js.org/react-integration.html]
 

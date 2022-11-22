@@ -1,0 +1,14 @@
+.container{
+    margin: 0 auto;
+    .operation{
+        display: flex;
+        padding: 20px 10px;
+        .title{
+            width: 95%;
+        }
+        .button {
+            width: 5%;
+        }
+    }
+
+}

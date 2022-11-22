@@ -5,30 +5,39 @@ import { NextPage } from 'next';
 
 interface IProps {
     initialValue: Record<any, any>,
-    Component: NextPage,
+    Component: NextPage & { layout: any },
     pageProps: any,
 }
 export default function App({initialValue, Component, pageProps}: IProps) {
-    return (
+    const renderLayout = () => {
+        if(!Component.layout) {
+            return <Component {...pageProps} />;
+        } else {
+            return (
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            )
+        }
+    }
+     return (
         <StoreProvider initialValue={initialValue}>
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
+            {renderLayout()}
         </StoreProvider>
     );
 }
- 
+
 // ssr 渲染 https://www.nextjs.cn/docs/api-reference/data-fetching/getInitialProps#context-object
 App.getInitialProps = async ({ ctx }: {ctx: any}) => {
     // 这里也可以去请求接口拿到数据 初始化页面数据
     // https://www.nextjs.cn/docs/api-reference/data-fetching/getInitialProps
-    const {userId, nickname, avatar} = ctx?.req.cookies;
+    const {userId = '', nickname = '', avatar = ''} = ctx?.req?.cookies || {};
     return {
         // initialValue 会被自动注入到 Page App 的props里面，刷新页面时候也可以自动更新登录态
         initialValue: {
             user: {
                 userInfo: {
-                    userId: +userId,
+                    userId: userId,
                     nickname,
                     avatar,
                 }

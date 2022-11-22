@@ -11,3 +11,5 @@ export const REGISTER_SAVE_FAIL = 1003;
 export const LOGOUT_FAIL = 1004;
 // 登录-github oauth 注册失败
 export const GITHUB_REGISTER_SAVE_FAIL = 1005;
+// 发布文章-失败
+export const PUBLISH_CONTENT_FAIL = 1006；

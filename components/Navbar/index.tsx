@@ -16,7 +16,11 @@ const Navbar = () => {
     const { pathname, push } = useRouter();
     const [isShowLogin, setIsShowLogin] = useState(false);
     const handleGoEditorPage = () => {
-        push('/');
+        if(!userId) {
+            message.warn('请先登录');
+        } else {
+            push('/editor/new');
+        }
     };
     const handleLogin = () => {
         setIsShowLogin(true);
@@ -28,7 +32,7 @@ const Navbar = () => {
         const res = await requestInstance.post<null, BaseDataResponse<null>>('/api/user/logout');
         if(res.code === 0) {
             store.user.setUserInfo({});
-            // 问题：为什么设置了直接{}是非响应式的？ 
+            // 问题：为什么设置了直接{}是非响应式的？
             // 因为 NavBar组件不是响应式的,想要属性值跟着组件一起响应式,需要用 mobx的observer把组件包裹起来
             // 当 mobx store里面数据变化时，NavBar也会重新渲染
             // 再就是 enableStaticRendering 设置为true，浏览器端的数据变化也不会响应，需要将 enableStaticRendering 置为 enableStaticRendering(typeof window === 'undefined')
@@ -37,7 +41,7 @@ const Navbar = () => {
         }
     };
     const handleProfile = () => {
-        // todo 去个人主页
+        push(`/user/${userId}`);
     };
     const DropDownMenu = (
         <Menu>
