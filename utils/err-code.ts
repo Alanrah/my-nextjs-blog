@@ -17,4 +17,5 @@ export const PUBLISH_CONTENT_FAIL = 1006;
 // 以后把error放在这里
 export const EXCEPTION_ERR = {
     GET_ARTICLE_LIST: 1007,
+    GET_ARTICLE_DETAIL: 1008,
 }

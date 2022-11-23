@@ -51,16 +51,6 @@ a {
         color: black;
     }
 }
-/* markdown 字体大小调整 */
-.w-md-editor-text-pre > code,
-.w-md-editor-preview,
-.w-md-editor-text-input {
-    font-size: 23px !important;
-    line-height: 24px !important;
-}
-.editor_container__iyHLv {
-    padding: 0px 10px;
-}
 
 
 .content-layout {
@@ -70,6 +60,6 @@ a {
     padding: 20px;
 }
 .content-main {
-    height: calc(100vh - 110px);
+    min-height: calc(100vh - 110px);
     overflow-y: auto;
 }

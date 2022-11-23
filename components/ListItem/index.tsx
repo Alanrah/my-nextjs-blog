@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { EyeOutlined } from '@ant-design/icons';
 import { formatDistanceToNow } from 'date-fns';
+import { markdownToTxt } from 'markdown-to-txt';
 
 interface IProps {
     article: IArticle;
@@ -28,7 +29,7 @@ const ListItem = (props: IProps) => {
                         <span className={styles.date}>{formatDistanceToNow(new Date(article.updateTime))}</span>
                     </div>
                     <div className={styles.title}>{article.title}</div>
-                    <div className={styles.content}>{article.content}</div>
+                    <div className={styles.content}>{markdownToTxt(article.content)}</div>
                     <div className={styles.views}>
                         <EyeOutlined />
                         <span>{article.views}</span>
