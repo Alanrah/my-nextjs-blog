@@ -26,8 +26,11 @@ export default function App({initialValue, Component, pageProps}: IProps) {
         </StoreProvider>
     );
 }
+// ssr 请求时候，服务端获取首屏数据，生成html返回给前端
+// ssg 代码编译时候，生成静态页面，访问时被命中就直接返回页面，适合动态元素少的页面，比如官网首页信息展示
+// csr 
 
-// ssr 渲染 https://www.nextjs.cn/docs/api-reference/data-fetching/getInitialProps#context-object
+// ssr 渲染预获取数据 https://www.nextjs.cn/docs/api-reference/data-fetching/getInitialProps#context-object
 App.getInitialProps = async ({ ctx }: {ctx: any}) => {
     // 这里也可以去请求接口拿到数据 初始化页面数据
     // https://www.nextjs.cn/docs/api-reference/data-fetching/getInitialProps

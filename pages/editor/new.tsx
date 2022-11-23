@@ -12,6 +12,8 @@ import styles from './index.module.scss';
 import { Input, Button, message } from 'antd';
 import requestInstance from 'service/fetch';
 import { useRouter } from "next/router";
+import { useStore } from 'store';
+import { observer } from 'mobx-react-lite';
 
 const MDEditor: NextPage = dynamic<MDEditorProps>(
     () => import("@uiw/react-md-editor"),
@@ -23,6 +25,8 @@ const NewEditor: NextPage = () => {
     const [title, setTitle] = useState("");
 
     const { push } = useRouter();
+
+    const store = useStore();
 
     const handlePublish = async () => {
         if(!title) {
@@ -38,9 +42,9 @@ const NewEditor: NextPage = () => {
         );
         if(res.code === 0) {
             message.success(res.msg || '发布成功');
-            push('/');
+            push(`/user/${store.user.userInfo.userId}`);
         } else {
-            message.error(res.msg || '发布成功');
+            message.error(res.msg || '发布失败');
         }
     }
     const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -72,4 +76,4 @@ const NewEditor: NextPage = () => {
 // 问题：在编辑器页面，不希望显示顶部的导航栏 layOut 该怎么办？
 // 用属性 layout 确认是否要显示导航栏，并在 _app.tsx 中使用这个属性判断是否要展示导航栏
 (NewEditor as any).layout = null;
-export default NewEditor;
+export default observer(NewEditor);

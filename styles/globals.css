@@ -61,3 +61,15 @@ a {
 .editor_container__iyHLv {
     padding: 0px 10px;
 }
+
+
+.content-layout {
+    width: 1080px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+}
+.content-main {
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+}

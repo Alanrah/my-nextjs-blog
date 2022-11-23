@@ -31,7 +31,12 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
         }
     );
     // 返回值是：
-    console.log('accessTokeRes', accessTokeRes);
+    // console.log('accessTokeRes', accessTokeRes);
+    // {
+    //     access_token: '', length=40的字符串
+    //     token_type: 'bearer',
+    //     scope: ''
+    // }
     const accessToken = accessTokeRes.access_token;
     // 通过 access_token 拿到 git user 信息
     const gitUserInfo = await requestInstance.get<null, {
@@ -48,7 +53,41 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
         }
     );
     // 返回值是：
-    console.log('gitUserInfo', gitUserInfo);
+    // console.log('gitUserInfo', gitUserInfo);
+    // {
+    //     login: 'Alanrah',
+    //     id: 0, 数字id
+    //     node_id: 'MDQ6VXNlcjE5NjQwODA3',
+    //     avatar_url: 'https://avatars.githubusercontent.com/u/19640807?v=4',
+    //     gravatar_id: '',
+    //     url: 'https://api.github.com/users/Alanrah',
+    //     html_url: 'https://github.com/Alanrah',
+    //     followers_url: 'https://api.github.com/users/Alanrah/followers',
+    //     following_url: 'https://api.github.com/users/Alanrah/following{/other_user}',
+    //     gists_url: 'https://api.github.com/users/Alanrah/gists{/gist_id}',
+    //     starred_url: 'https://api.github.com/users/Alanrah/starred{/owner}{/repo}',
+    //     subscriptions_url: 'https://api.github.com/users/Alanrah/subscriptions',
+    //     organizations_url: 'https://api.github.com/users/Alanrah/orgs',
+    //     repos_url: 'https://api.github.com/users/Alanrah/repos',
+    //     events_url: 'https://api.github.com/users/Alanrah/events{/privacy}',
+    //     received_events_url: 'https://api.github.com/users/Alanrah/received_events',
+    //     type: 'User',
+    //     site_admin: false,
+    //     name: 'Alanrah',
+    //     company: null,
+    //     blog: '',
+    //     location: 'Beijing',
+    //     email: null,
+    //     hireable: null,
+    //     bio: null,
+    //     twitter_username: null,
+    //     public_repos: 19,
+    //     public_gists: 0,
+    //     followers: 2,
+    //     following: 48,
+    //     created_at: '2016-05-30T02:02:18Z',
+    //     updated_at: '2022-11-07T02:45:54Z'
+    //   }
 
     const db = await getDataSource();
     const userAuthRepo = db.getRepository(UserAuth);
@@ -84,15 +123,6 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
             await session.save();
             setCookie(cookie, {userId: id, nickname, avatar});
 
-            // res.status(200).json({
-            //     code: 0,
-            //     msg: 'Github Oauth 注册并登录成功',
-            //     data: {
-            //         userId: id,
-            //         nickname,
-            //         avatar,
-            //     },
-            // });
             res.writeHead(302, {
                 Location: '/',
             });
