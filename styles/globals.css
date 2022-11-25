@@ -58,6 +58,7 @@ a {
     margin: 0 auto;
     background-color: #fff;
     padding: 20px;
+    margin-top: 20px;
 }
 .content-main {
     min-height: calc(100vh - 110px);

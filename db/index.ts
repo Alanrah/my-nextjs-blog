@@ -1,10 +1,12 @@
-import { AppDataSource } from "./data-source"
+import { AppDataSource } from "./data-source";
 
 async function getDataSource() {
     try {
-        await AppDataSource.initialize();
+        if(!AppDataSource.isInitialized) {
+            await AppDataSource.initialize();
+        }
     } catch (error) {
-        console.log(error);
+        console.log('AppDataSource.initialize', error);
     }
     return AppDataSource;
 }

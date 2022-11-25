@@ -3,12 +3,13 @@ import {
     EXCEPTION_ERR,
 } from 'utils/err-code';
 import getDataSource from 'db/index';
-import { User, Articles } from 'db/entity';
+import { Articles, Comment } from 'db/entity';
 
 async function detail(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<any>>) {
-    const { id } = req.query;
+    const { id, isView = '0' } = req.query;
     const db = await getDataSource();
     const articlesRepo = db.getRepository(Articles);
+    const commentRepo = db.getRepository(Comment);
     if(!id) {
         res.status(200).json({
             code: EXCEPTION_ERR.GET_ARTICLE_DETAIL,
@@ -23,9 +24,9 @@ async function detail(req: NextApiRequest, res: NextApiResponse<BaseDataResponse
             where: {
                 id: +id,
             },
-            relations: ['user'],
+            relations: ['user'], // todo comments comments.user
         });
-        if(article) {
+        if(article && +isView === 1) {
             article.views = (article.views || 0) + 1;
             await articlesRepo.save(article);
         }

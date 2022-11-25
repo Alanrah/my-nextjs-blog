@@ -16,8 +16,11 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
     const cookie = Cookie.fromApiRoute(req, res);
     const session: ISession = req.session;
     const { code: requestToken } = req?.query; // code c8454a0b978ed41690e0
-    console.log('code', requestToken);
-    // todo 如果用户拒绝了，会怎么办 github 访问不给力，没走下去，需要找个好点儿的网络继续调试
+    if (!requestToken) {
+        res.redirect('/');
+        return;
+    }
+
     // github 授权后，会跳到 redirectUrl?code=xxx 并且携带 code 授权码，通过 code 拿到 access_token
     const accessTokeRes = await requestInstance.post<null, {
         access_token: string,
@@ -43,6 +46,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
         name: string,
         avatar_url: string,
         login: string, // github 用户名
+        id: number,
     }>(
         GithubUserPath,
         {
@@ -95,7 +99,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
     const userAuth = await userAuthRepo.findOne({
         where: {
             identityType:'github',
-            identifier: GithubClientID,
+            identifier: String(gitUserInfo.id),
         },
         relations: ['user'],
     });
@@ -108,7 +112,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
         userRecord.job = '未知';
 
         const userAuthRecord = new UserAuth();
-        userAuthRecord.identifier = GithubClientID;
+        userAuthRecord.identifier = String(gitUserInfo.id);
         userAuthRecord.identityType = 'github';
         userAuthRecord.credential = accessToken; // 其实保留 accessToken 或者 验证码，都没啥意义，这个字段没啥意义，只在 identity_type是用户名密码时候，才有用
         userAuthRecord.user = userRecord;
@@ -122,10 +126,12 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
             session.avatar = avatar;
             await session.save();
             setCookie(cookie, {userId: id, nickname, avatar});
-
-            res.writeHead(302, {
-                Location: '/',
-            });
+            // https://coding.imooc.com/learn/questiondetail/pylDvYyrdNEXkBNm.html
+            // res.writeHead(302, {
+            //     Location: '/',
+            // });
+            // todo 这个新打开了个tab到首页，怎么打开初始登录那个tab呢
+            res.redirect('/');
         } catch (error) {
             // todo 需要处理失败信息
             res.status(200).json({
@@ -147,9 +153,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
         await session.save();
         setCookie(cookie, {userId: id, nickname, avatar});
         // 已经有登录信息了，重定向到首页
-        res.writeHead(302, {
-            Location: '/',
-        });
+        res.redirect('/');
     }
 }
 

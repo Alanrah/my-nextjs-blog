@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
     if (res.code !== 0) {
         message.error(res.msg || '获取文章列表失败');
-      }
+    }
 
     return {
         props: {

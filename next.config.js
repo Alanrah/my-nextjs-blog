@@ -3,9 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-      domains: [
-          'p4.a.yximgs.com' // todo
-      ]
+      domains: []
   }
 }
 const removeImports = require('next-remove-imports')();

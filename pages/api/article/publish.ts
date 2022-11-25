@@ -31,11 +31,11 @@ async function publish(req: NextApiRequest, res: NextApiResponse<BaseDataRespons
     if (user) {
         try {
             article.user = user;
-            await articlesRepo.save(article);
+            const articleRes = await articlesRepo.save(article);
             res.status(200).json({
                 code: 0,
                 msg: '文章发布成功',
-                data: article,
+                data: articleRes,
             });
         } catch (error) {
             res.status(200).json({

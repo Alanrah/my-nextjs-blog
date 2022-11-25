@@ -37,10 +37,14 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 登录用一下图形验证
 蓝牙打印，扫二维码
 
+
 # 遇到的问题
 * 1. Delete ␍ eslint(prettier/prettier)
     mac系统换行符为LF，windows系统换行符为CRLF，git代码仓库中的换行符为LF。在windows  git clone 过程，git将所有文件换行符（LF）更换成本地换行符(CRLF)了，而 eslint 检查工具要求换行符为 LF ，因此有了这个报错。
 * 2. api 怎么debug
+* 3.视频里面显示库文件大小的插件：import cost
+* 4.怎么指定api请求的method，
+    在请求函数里面添加判断，Next.js 中的 API 路由默认支持所有类型的请求，如果您只想支持特定 method 的请求，可使用 req.method 过滤，if(req.method !== 'POST')
 # 笔记
 ## 2.1
 * /pages/_app.tsx 是全局的入口
@@ -54,4 +58,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 * Catch all routes: pages/post/[...slug].js --> /post/a ， pages/post/[[...slug]].js -->  /post 或者 /post/a 或者 /post/a/b
 ## 4.13
 * mobx 类似于 vue 中的 vuex；[ https://mobx.js.org/react-integration.html]
-
+## 数据库
+* 数据库的字符集用的是 utf8mb3 ，如果有 emoji 符号的话可以设置成 utf8mb4，因为它占 4 个字节，我们这里因为不涉及所以 utf8mb3
