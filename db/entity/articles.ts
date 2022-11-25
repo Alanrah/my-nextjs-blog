@@ -20,7 +20,7 @@ export class Articles extends CommonEntity {
     @ManyToOne(() => User, { cascade: true }) // 多篇文章，对应一个用户
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' }) // 'id' 是user对应的列的名字
     user: User | undefined; // 根据 user_id查到的user对象，名称就是 user
-    // 问题 todo
+
     @OneToMany(() => Comment, (comment) => comment.article)
     comments!: Comment[]
 }

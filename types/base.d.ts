@@ -7,6 +7,15 @@ declare interface IUser {
     createTime: string,
     updateTime: string,
 }
+
+declare interface IComment {
+    id: number,
+    user: IUser,
+    content: string,
+    article: IArticle,
+    createTime: string,
+    updateTime: string,
+}
 declare interface IArticle {
     id: number,
     title: string,
@@ -16,4 +25,5 @@ declare interface IArticle {
     user: IUser,
     createTime: string,
     updateTime: string,
+    comments: IComment[],
 }

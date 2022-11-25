@@ -9,7 +9,6 @@ async function detail(req: NextApiRequest, res: NextApiResponse<BaseDataResponse
     const { id, isView = '0' } = req.query;
     const db = await getDataSource();
     const articlesRepo = db.getRepository(Articles);
-    const commentRepo = db.getRepository(Comment);
     if(!id) {
         res.status(200).json({
             code: EXCEPTION_ERR.GET_ARTICLE_DETAIL,
@@ -20,11 +19,12 @@ async function detail(req: NextApiRequest, res: NextApiResponse<BaseDataResponse
     }
 
     try {
+        // todo 为什么会查询一次，会把article_id改成null了…………
         const article = await articlesRepo.findOne({
             where: {
                 id: +id,
             },
-            relations: ['user'], // todo comments comments.user
+            relations: ['user', 'comments', 'comments.user'],
         });
         if(article && +isView === 1) {
             article.views = (article.views || 0) + 1;

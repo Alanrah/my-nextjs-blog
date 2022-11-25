@@ -8,11 +8,11 @@ export class Comment extends CommonEntity {
     @Column('varchar', { nullable: false })
     content!: string;
 
-    @ManyToOne(() => User, { cascade: true }) // 多个评论，对应一个用户
+    @ManyToOne(() => User) // 多个评论，对应一个用户
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-    user: User | undefined;
+    user!: User;
 
-    @ManyToOne(() => Articles, { cascade: true }) // 多个评论，对应一篇文章
+    @ManyToOne(() => Articles) // 多个评论，对应一篇文章
     @JoinColumn({ name: 'article_id', referencedColumnName: 'id' })
-    article: Articles | undefined;
+    article!: Articles;
 }

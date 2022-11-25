@@ -40,6 +40,7 @@ const Detail = (props: IProps) => {
     const { article } = props;
     const store = useStore();
     const [inputComment, setInputComment] = useState('');
+    const [comments, setComments] = useState(article.comments || []);
     const handleComment = async () => {
         if(!inputComment) {
             message.warn('请输入评论内容');
@@ -53,6 +54,17 @@ const Detail = (props: IProps) => {
             message.error(res.msg || '评论失败');
         } else {
             message.success(res.msg || '评论成功');
+            // 刷新评论列表
+            const newComments: IComment[] = [
+                {
+                    id: Math.random(),
+                    content: inputComment,
+                    createTime: String(new Date()),
+                    updateTime: String(new Date()),
+                    user: store.user.userInfo as IUser,
+                },
+            ].concat(comments);
+            setComments(newComments);
             setInputComment('');
         }
     }
@@ -87,18 +99,34 @@ const Detail = (props: IProps) => {
             <div className={`content-layout ${styles.comment}`}>
                 <h3 className={styles.commentTitle}>评论</h3>
                 {
-                    store.user?.userInfo?.userId 
+                    store.user?.userInfo?.userId
                         ? <div className={styles.enter}>
                             <Avatar src={store.user?.userInfo?.avatar} size={40}></Avatar>
                             <div className={styles.content}>
                                 <Input.TextArea placeholder='请输入评论' rows={4} value={inputComment} onChange={(event) => setInputComment(event?.target?.value)}></Input.TextArea>
                                 <Button type="primary" onClick={handleComment} disabled={!inputComment}>发表评论</Button>
                             </div>
-                        </div> 
+                        </div>
                         : <div>请先登录</div>
                 }
                 <Divider></Divider>
                 <div className={styles.display}>
+                    {
+                    comments?.length
+                        ? comments.map(comment => {
+                            return <div className={styles.wrapper} key={comment.id}>
+                                <Avatar src={comment?.user?.avatar} size={40}></Avatar>
+                                <div className={styles.info}>
+                                    <div className={styles.name}>
+                                        <div >{comment?.user?.nickname}</div>
+                                        <div className={styles.date}>{format(new Date(comment?.updateTime), 'yyyy-MM-dd hh:mm:ss')}</div>
+                                    </div>
+                                    <div className={styles.content}>{comment?.content}</div>
+                                </div>
+                            </div>
+                        })
+                        : <Empty description={'评论列表为空'} />
+                    }
                 </div>
             </div>
         </div>
