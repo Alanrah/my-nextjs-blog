@@ -1,4 +1,3 @@
-
 import { message, Empty, Avatar, Input, Button, Divider } from 'antd';
 import requestInstance from 'service/fetch';
 import { GetServerSideProps } from 'next';

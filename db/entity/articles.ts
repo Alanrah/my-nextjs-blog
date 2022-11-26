@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne, JoinColumn, OneToMany } from "typeorm"
+import { Column, Entity, ManyToOne, JoinColumn, OneToMany, ManyToMany } from "typeorm"
 import { CommonEntity } from './commonEntity';
 import { User } from './user';
 import { Comment } from "./comments";
+import { Tag } from './tags';
 
 @Entity({ name: 'articles' })
 export class Articles extends CommonEntity {
@@ -23,4 +24,10 @@ export class Articles extends CommonEntity {
 
     @OneToMany(() => Comment, (comment) => comment.article)
     comments!: Comment[]
+
+    // 注意，反向关系没有@JoinTable。 @JoinTable必须只在关系的一边。
+    @ManyToMany(() => Tag, (tag) => tag.articles, {
+        cascade: true
+      })
+      tags!: Tag[]
 }

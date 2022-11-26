@@ -12,7 +12,7 @@ export class UserAuth extends CommonEntity {
 
     @Column('varchar')
     credential: string | undefined;
-
+    // 一对多的关系可以通过设置外键存储
     @ManyToOne(() => User, { cascade: true })
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' }) // 'id' 是user对应的列的名字
     user: User | undefined; // 根据 user_id查到的user对象，名称就是 user

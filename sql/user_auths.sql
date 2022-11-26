@@ -35,6 +35,5 @@ CREATE TABLE `user_auths`  (
 -- ----------------------------
 -- Records of user_auths
 -- ----------------------------
-INSERT INTO `user_auths` VALUES (1, 3, 'phone', '18210623224', '6887', 1668677899113, 1668677899113);
 
 SET FOREIGN_KEY_CHECKS = 1;

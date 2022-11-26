@@ -27,3 +27,15 @@ declare interface IArticle {
     updateTime: string,
     comments: IComment[],
 }
+
+declare interface ITag {
+    id: number,
+    title: string,
+    icon: string,
+    followCount: number,
+    articleCount: number,
+    users: IUser[],
+    createTime: string,
+    updateTime: string,
+    articles: IArticle[],
+}
