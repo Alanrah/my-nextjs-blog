@@ -31,17 +31,19 @@ async function publish(req: NextApiRequest, res: NextApiResponse<BaseDataRespons
     });
     if (user) {
         try {
-            const tags = await tagRepo.find({
-                // 注意 查询语句
-                where: tagIds?.map((tagId: number) => ({ id: tagId })),
-            });
-            const newTags = tags?.map((tag) => {
-                tag.articleCount = tag?.articleCount + 1;
-                return tag;
-            });
+            if(tagIds.length) {
+                const tags = await tagRepo.find({
+                    // 注意 查询语句
+                    where: tagIds?.map((tagId: number) => ({ id: tagId })),
+                });
+                const newTags = tags?.map((tag) => {
+                    tag.articleCount = tag?.articleCount + 1;
+                    return tag;
+                });
+                article.tags = newTags;
+            }
 
             article.user = user;
-            article.tags = newTags;
             const articleRes = await articlesRepo.save(article);
             res.status(200).json({
                 code: 0,

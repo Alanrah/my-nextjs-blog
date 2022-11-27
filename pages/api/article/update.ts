@@ -8,7 +8,7 @@ import getDataSource from 'db/index';
 import { Articles, Tag } from 'db/entity';
 
 async function publish(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<any>>) {
-    const { title = '', content = '', id, tagIds } = req.body;
+    const { title = '', content = '', id, tagIds = [] } = req.body;
     const db = await getDataSource();
     const articlesRepo = db.getRepository(Articles);
     const tagRepo = db.getRepository(Tag);
@@ -24,19 +24,21 @@ async function publish(req: NextApiRequest, res: NextApiResponse<BaseDataRespons
         try {
             article.title = title;
             article.content = content;
-            const oldTagIds = article?.tags?.map(tag => tag.id) || [];
+            if(tagIds.length) {
+                const oldTagIds = article?.tags?.map(tag => tag.id) || [];
 
-            const tags = await tagRepo.find({
-                // 注意 查询语句
-                where: tagIds?.map((tagId: number) => ({ id: tagId })),
-            });
-            const newTags = tags?.map((tag) => {
-                if (!oldTagIds.includes(tag.id)) {
-                    tag.articleCount = tag?.articleCount + 1; // 老tags没有，就是新增的标签，文章数+1
-                }
-                return tag;
-            });
-            article.tags = newTags;
+                const tags = await tagRepo.find({
+                    // 注意 查询语句
+                    where: tagIds?.map((tagId: number) => ({ id: tagId })),
+                });
+                const newTags = tags?.map((tag) => {
+                    if (!oldTagIds.includes(tag.id)) {
+                        tag.articleCount = tag?.articleCount + 1; // 老tags没有，就是新增的标签，文章数+1
+                    }
+                    return tag;
+                });
+                article.tags = newTags;
+            }
             await articlesRepo.save(article);
 
             res.status(200).json({
