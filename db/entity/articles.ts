@@ -25,9 +25,10 @@ export class Articles extends CommonEntity {
     @OneToMany(() => Comment, (comment) => comment.article)
     comments!: Comment[]
 
-    // 注意，反向关系没有@JoinTable。 @JoinTable必须只在关系的一边。
+    // 注意，反向关系没有@JoinTable。 @JoinTable必须只在关系的一边。、
+    // 新增文章时，对应的标签tag的article_count也要同步联动
     @ManyToMany(() => Tag, (tag) => tag.articles, {
         cascade: true
-      })
-      tags!: Tag[]
+    })
+    tags!: Tag[]
 }

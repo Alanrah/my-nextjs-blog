@@ -24,4 +24,6 @@ export const EXCEPTION_ERR = {
     COMMENT_PUBLISH_FAIL: 1011,
 
     GET_TAG_LIST: 1012,
+    FOLLOW_TAG_FAIL: 1013,
+
 }

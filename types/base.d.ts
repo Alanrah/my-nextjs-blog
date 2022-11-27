@@ -26,6 +26,7 @@ declare interface IArticle {
     createTime: string,
     updateTime: string,
     comments: IComment[],
+    tags: ITag[],
 }
 
 declare interface ITag {

@@ -7,9 +7,9 @@ import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
 import { MDEditorProps } from '@uiw/react-md-editor';
 // import * as commands from '@uiw/react-md-editor/esm/commands';
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import styles from './index.module.scss';
-import { Input, Button, message } from 'antd';
+import { Input, Button, message, Select } from 'antd';
 import requestInstance from 'service/fetch';
 import { useRouter } from "next/router";
 import { useStore } from 'store';
@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
     if (res.code !== 0) {
         message.error(res.msg || '获取文章详情失败');
-      }
+    }
 
     return {
         props: {
@@ -46,20 +46,22 @@ const MDEditor: NextPage = dynamic<MDEditorProps>(
 
 const ModifyEditor = (props: IProps) => {
     const { article } = props;
-    
+
     const [content, setContent] = useState(article.content || '');
     const [title, setTitle] = useState(article.title || '');
+    const [allTags, setAllTags] = useState<ITag[]>([]);
+    const [tagIds, setTagIds] = useState<number[]>(article.tags?.map(tag => tag.id));
 
     const { push } = useRouter();
 
     const store = useStore();
 
     const handlePublish = async () => {
-        if(Number(store.user.userInfo.userId) !== Number(article.user.id)) {
+        if (Number(store.user.userInfo.userId) !== Number(article.user.id)) {
             message.warn('无修改文章的权限！');
             return;
         }
-        if(!title) {
+        if (!title) {
             message.warn('请输入文章标题');
             return;
         }
@@ -68,10 +70,11 @@ const ModifyEditor = (props: IProps) => {
             {
                 title,
                 content,
-                id: article.id
+                id: article.id,
+                tagIds,
             }
         );
-        if(res.code === 0) {
+        if (res.code === 0) {
             message.success(res.msg || '更新成功');
             push(`/article/${article.id}`);
         } else {
@@ -80,6 +83,28 @@ const ModifyEditor = (props: IProps) => {
     }
     const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e?.target?.value);
+    }
+
+    const getAllTags = async () => {
+        const res = await requestInstance.get<any, BaseDataResponse<{followList: Array<ITag>, allList:  Array<ITag>}>>(
+            '/api/tag/list',
+        );
+        if(res?.code === 0) {
+            const {allList = []} = res?.data;
+            setAllTags(allList);
+        } else {
+            message.error(res?.msg || '获取标签列表失败了');
+        }
+    }
+    useEffect(() => {
+        getAllTags();
+    }, []);
+    const selectFieldNames = {
+        value: 'id',
+        label: 'title'
+    };
+    const handleSelectTag = (ids: number[]) => {
+        setTagIds(ids);
     }
 
     return (
@@ -93,13 +118,24 @@ const ModifyEditor = (props: IProps) => {
                     value={title}
                     onChange={handleTitleChange}
                 ></Input>
+                {allTags.length &&
+                <Select
+                    className={styles.tag}
+                    mode="multiple"
+                    allowClear
+                    placeholder="请选择标签"
+                    onChange={handleSelectTag}
+                    options={allTags}
+                    fieldNames={selectFieldNames}
+                    defaultValue={tagIds}
+                ></Select>}
                 <Button type="primary" className={styles.button} onClick={handlePublish}>发布</Button>
             </div>
             <MDEditor
-                    value={content}
-                    onChange={setContent}
-                    height={1080}
-                />
+                value={content}
+                onChange={setContent}
+                height={1080}
+            />
         </div>
 
     )

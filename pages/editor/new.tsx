@@ -1,7 +1,7 @@
 // 问题： 编辑器用什么？支持 nextjs
 // https://www.npmjs.com/package/@uiw/react-md-editor
 import { NextPage } from "next";
-import React from "react";
+import React, { useEffect } from "react";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
@@ -9,7 +9,7 @@ import { MDEditorProps } from '@uiw/react-md-editor';
 // import * as commands from '@uiw/react-md-editor/esm/commands';
 import { useState, ChangeEvent } from "react";
 import styles from './index.module.scss';
-import { Input, Button, message } from 'antd';
+import { Input, Button, message, Select } from 'antd';
 import requestInstance from 'service/fetch';
 import { useRouter } from "next/router";
 import { useStore } from 'store';
@@ -23,13 +23,15 @@ const MDEditor: NextPage = dynamic<MDEditorProps>(
 const NewEditor: NextPage = () => {
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
+    const [allTags, setAllTags] = useState<ITag[]>([]);
+    const [tagIds, setTagIds] = useState<number[]>([]);
 
     const { push } = useRouter();
 
     const store = useStore();
 
     const handlePublish = async () => {
-        if(!title) {
+        if (!title) {
             message.warn('请输入文章标题');
             return;
         }
@@ -38,9 +40,10 @@ const NewEditor: NextPage = () => {
             {
                 title,
                 content,
+                tagIds,
             }
         );
-        if(res.code === 0) {
+        if (res.code === 0) {
             message.success(res.msg || '发布成功');
             push(`/user/${store.user.userInfo.userId}`);
         } else {
@@ -49,6 +52,27 @@ const NewEditor: NextPage = () => {
     }
     const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e?.target?.value);
+    }
+    const getAllTags = async () => {
+        const res = await requestInstance.get<any, BaseDataResponse<{followList: Array<ITag>, allList:  Array<ITag>}>>(
+            '/api/tag/list',
+        );
+        if(res?.code === 0) {
+            const {allList = []} = res?.data;
+            setAllTags(allList);
+        } else {
+            message.error(res?.msg || '获取标签列表失败了');
+        }
+    }
+    useEffect(() => {
+        getAllTags();
+    }, []);
+    const selectFieldNames = {
+        value: 'id',
+        label: 'title'
+    };
+    const handleSelectTag = (ids: number[]) => {
+        setTagIds(ids);
     }
 
     return (
@@ -62,13 +86,22 @@ const NewEditor: NextPage = () => {
                     value={title}
                     onChange={handleTitleChange}
                 ></Input>
+                <Select
+                    className={styles.tag}
+                    mode="multiple"
+                    allowClear
+                    placeholder="请选择标签"
+                    onChange={handleSelectTag}
+                    options={allTags}
+                    fieldNames={selectFieldNames}
+                ></Select>
                 <Button type="primary" className={styles.button} onClick={handlePublish}>发布</Button>
             </div>
             <MDEditor
-                    value={content}
-                    onChange={setContent}
-                    height={1080}
-                />
+                value={content}
+                onChange={setContent}
+                height={1080}
+            />
         </div>
 
     )

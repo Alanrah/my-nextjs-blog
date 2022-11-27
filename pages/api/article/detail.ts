@@ -24,7 +24,8 @@ async function detail(req: NextApiRequest, res: NextApiResponse<BaseDataResponse
             where: {
                 id: +id,
             },
-            relations: ['user', 'comments', 'comments.user'], // 不关联 'comments', 'comments.user'  ，查询后 article_id 不会被篡改
+            // tags 也被篡改了……这个查询语句有毒，不加 'tags' 的关联数据就不会被篡改
+            relations: ['user', 'comments', 'comments.user', 'tags'], // 不关联 'comments', 'comments.user'  ，查询后 article_id 不会被篡改
         });
         if(article && +isView === 1) {
             article.views = (article.views || 0) + 1;

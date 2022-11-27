@@ -1,14 +1,21 @@
-.container{
+.container {
     margin: 0 auto;
-    .operation{
-        display: flex;
-        padding: 20px 10px;
-        .title{
-            width: 95%;
-        }
-        .button {
-            width: 5%;
-        }
-    }
 
-}
+    .operation {
+      display: flex;
+      padding: 10px 10px;
+
+      .title {
+        width: 80%;
+      }
+
+      .tag {
+        width: 13%;
+        margin: 0 1%;
+      }
+
+      .button {
+        width: 5%;
+      }
+    }
+  }

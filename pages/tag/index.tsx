@@ -25,7 +25,6 @@ const Tag: NextPage = () => {
         const res = await requestInstance.get<any, BaseDataResponse<{followList: Array<ITag>, allList:  Array<ITag>}>>(
             '/api/tag/list',
         );
-        console.log(res)
         if(res?.code === 0) {
             const {followList = [], allList = []} = res?.data;
             setFollowTags(followList);
@@ -41,8 +40,28 @@ const Tag: NextPage = () => {
         [userId],// 从未登录到登录状态，需要刷新
     );
 
-    const handleUnFollow = (tagId: number) => {}
-    const handleFollow = (tagId: number) => {}
+    const submitFollow = async (tagId: number, isFollow: boolean) => {
+        const res = await requestInstance.post<any, BaseDataResponse<{followList: Array<ITag>, allList:  Array<ITag>}>>(
+            '/api/tag/follow',
+            {
+                tagId,
+                type: isFollow ? 'follow' : 'unfollow',
+            }
+        );
+        if(res?.code === 0) {
+            message.success(res?.msg || '操作成功');
+            getTagsList();
+        } else {
+            message.error(res?.msg || '操作失败');
+        }
+    }
+
+    const handleUnFollow = async (tagId: number) => {
+        submitFollow(tagId, false);
+    }
+    const handleFollow = async (tagId: number) => {
+        submitFollow(tagId, true);
+    }
 
     const Followed = () => {
         return (<div className={styles.tags}>
@@ -58,7 +77,7 @@ const Tag: NextPage = () => {
                                 <Button onClick={() => handleUnFollow(tag.id)}>取消关注</Button>
                         </div>
                     })
-                    : <Empty description="暂无已关注标签"></Empty>)
+                    : <Empty className={styles.emptyMargin} description="暂无已关注标签"></Empty>)
                     : <Empty description="请先登录"></Empty>
             }
         </div>);
@@ -77,7 +96,7 @@ const Tag: NextPage = () => {
                             <div>{
                                 tag?.users?.find(user => Number(userId) === Number(user.id))
                                     ? <Button onClick={() => handleUnFollow(tag.id)}>取消关注</Button>
-                                    :<Button onClick={() => handleFollow(tag.id)}>关注</Button>}</div>
+                                    :<Button type="primary" onClick={() => handleFollow(tag.id)}>关注</Button>}</div>
                     </div>
                 })
                 : <Empty description="暂无标签"></Empty>
