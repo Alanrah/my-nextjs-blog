@@ -1,7 +1,7 @@
-import { PrimaryGeneratedColumn, Column, BeforeUpdate, BeforeInsert } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, BeforeUpdate, BeforeInsert, BaseEntity } from 'typeorm';
 
-export class CommonEntity {
-    @PrimaryGeneratedColumn({ type: 'bigint', name: 'id', unsigned: true })
+export class CommonEntity extends BaseEntity {
+    @PrimaryGeneratedColumn()
     readonly id!: number;
 
     @Column('datetime', { name: 'create_time' })

@@ -78,7 +78,7 @@ const Login = (props: IProps) => {
     // https://www.ruanyifeng.com/blog/2019/04/github-oauth.html  阮一峰 GitHub OAuth 第三方登录示例教程
     // 在github 注册 app 的信息 https://github.com/settings/applications/2046992
     const handleOAuthGithub = () => {
-        window.open(GithubCallbackUrl);
+        window.location.href = GithubCallbackUrl;
     };
     // https://open.kuaishou.com/platform/openApi?menu=13 快手第三方登录文档
     const handleOAuthKwai = () => { };

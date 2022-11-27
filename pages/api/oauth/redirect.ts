@@ -130,7 +130,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
             // res.writeHead(302, {
             //     Location: '/',
             // });
-            // todo 这个新打开了个tab到首页，怎么打开初始登录那个tab呢
+            // 这个新打开了个tab到首页，怎么打开初始登录那个tab呢
             res.redirect('/');
         } catch (error) {
             // todo 需要处理失败信息

@@ -19,13 +19,13 @@ async function detail(req: NextApiRequest, res: NextApiResponse<BaseDataResponse
     }
 
     try {
-        // todo 为什么会查询一次，会把article_id改成null了…………
+        // 问题 为什么会查询一次，会把article_id改成null了…………因为entity定义有问题
+        // 详情见 https://coding.imooc.com/learn/questiondetail/279728.html
         const article = await articlesRepo.findOne({
             where: {
                 id: +id,
             },
-            // tags 也被篡改了……这个查询语句有毒，不加 'tags' 的关联数据就不会被篡改
-            relations: ['user', 'comments', 'comments.user', 'tags'], // 不关联 'comments', 'comments.user'  ，查询后 article_id 不会被篡改
+            relations: ['user', 'comments', 'comments.user', 'tags'],
         });
         if(article && +isView === 1) {
             article.views = (article.views || 0) + 1;
