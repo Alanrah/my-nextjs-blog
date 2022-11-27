@@ -71,7 +71,7 @@ async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<
                 session.nickname = nickname;
                 session.avatar = avatar;
                 await session.save();
-                setCookie(cookie, {userId: id, nickname, avatar});
+                setCookie(cookie, {userId: id});
 
                 res.status(200).json({
                     code: 0,
@@ -99,7 +99,7 @@ async function login(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<
             session.nickname = nickname;
             session.avatar = avatar;
             await session.save();
-            setCookie(cookie, {userId: id, nickname, avatar});
+            setCookie(cookie, {userId: id});
 
             res.status(200).json({
                 code: 0,

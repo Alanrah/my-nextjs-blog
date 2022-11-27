@@ -125,7 +125,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
             session.nickname = nickname;
             session.avatar = avatar;
             await session.save();
-            setCookie(cookie, {userId: id, nickname, avatar});
+            setCookie(cookie, {userId: id});
             // https://coding.imooc.com/learn/questiondetail/pylDvYyrdNEXkBNm.html
             // res.writeHead(302, {
             //     Location: '/',
@@ -151,7 +151,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
         session.nickname = nickname;
         session.avatar = avatar;
         await session.save();
-        setCookie(cookie, {userId: id, nickname, avatar});
+        setCookie(cookie, {userId: id});
         // 已经有登录信息了，重定向到首页
         res.redirect('/');
     }

@@ -26,4 +26,5 @@ export const EXCEPTION_ERR = {
     GET_TAG_LIST: 1012,
     FOLLOW_TAG_FAIL: 1013,
 
+    USER_DETAIL_FAIL: 1014,
 }

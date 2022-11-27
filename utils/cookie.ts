@@ -1,4 +1,3 @@
-import { Cookie } from 'next-cookie';
 import { IUserInfo } from 'store/userStore';
 
 export const setCookie = (cookie: any, values: IUserInfo) => {
@@ -8,14 +7,6 @@ export const setCookie = (cookie: any, values: IUserInfo) => {
 
     const {userId, nickname, avatar} = values;
     cookie.set('userId', userId || '', {
-        path,
-        expires,
-    });
-    cookie.set('nickname', nickname || '', {
-        path,
-        expires,
-    });
-    cookie.set('avatar', avatar || '', {
         path,
         expires,
     });

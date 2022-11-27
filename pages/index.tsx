@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
 // 从页面组件中直接使用 props 来获取 getServerSideProps 注入的 props
 const Home = (props: IProps) => {
-    const [selectTag, setSelectTag] = useState(0);
+    const [selectTag, setSelectTag] = useState(-1);
     const [articles, setArticles] = useState(props.articles || []);
     const [tags, setTags] = useState(props.tags || []);
     // 这个也可以 但是此处用了 datatset 传递数据
@@ -58,10 +58,17 @@ const Home = (props: IProps) => {
 
     useEffect(
         () => {
+            let url = '';
+            if(selectTag <= 0) {
+                // 请求全部
+                url = '/api/article/list';
+            } else {
+                url = `/api/article/list?tag_id=${selectTag}`;
+            }
             requestInstance.get<any, BaseDataResponse<{
                 articles: Array<IArticle>,
                 tags?: Array<ITag>
-            }>>(`/api/article/list?tag_id=${selectTag}`, {
+            }>>(url, {
                 params: {
                     page: 1,
                     pageSize: 20,
@@ -75,12 +82,25 @@ const Home = (props: IProps) => {
             });
         },
         [selectTag]
-    )
+    );
+
+    const localAllTag = {
+        id: -1,
+        title: '全部',
+    }
 
     return (
         <div>
             <div className={styles.tags} onClick={handleSelect}>
-                {/* todo 全部标签 */}
+                <div
+                    key={localAllTag?.id}
+                    data-tagid={localAllTag?.id}
+                    className={classNames(
+                    styles.tag,
+                    selectTag === localAllTag.id ? styles.active : ''
+                )}>
+                    {localAllTag.title}
+                </div>
                 {
                     tags?.map((tag) => {
                         return <div
