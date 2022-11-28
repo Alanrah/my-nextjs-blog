@@ -36,7 +36,7 @@ App.getInitialProps = async ({ ctx }: {ctx: any}) => {
     // 这里也可以去请求接口拿到数据 初始化页面数据
     // https://www.nextjs.cn/docs/api-reference/data-fetching/getInitialProps
     const {userId = ''} = ctx?.req?.cookies || {};
-    const res = await request.get<null, BaseDataResponse<{userInfo: IUser}>>(`http://${ctx?.req?.headers?.host || 'localhost:3000/'}/api/user/detail`, {params: {id: userId}});
+    const res = await request.get<null, BaseDataResponse<{userInfo: IUser}>>(`http://${ctx?.req?.headers?.host || process.env.CURRENT_HOST}/api/user/detail`, {params: {id: userId}});
     const { id, nickname, avatar} = res.data.userInfo || {};
     return {
         // initialValue 会被自动注入到 Page App 的props里面，刷新页面时候也可以自动更新登录态

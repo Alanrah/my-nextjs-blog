@@ -53,4 +53,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## 8.nextjs+vercel进行生产环境部署
 * 1.新建线上数据库，同步新建表，更新本地 .env.production
-* 2.yarn build，构建项目。
+* 2.yarn build，构建项目。构建产物，在根目录的 ./next 下面。
+* 3.云端部署在 https://vercel.com/alanrah/my-nextjs-blog ，访问地址是：https://my-nextjs-blog-pied.vercel.app/
+
+
