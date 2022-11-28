@@ -69,5 +69,17 @@ https://nextjs.org/docs/advanced-features/dynamic-import
 动态异步引入 ListItem，该组件单独打包请求，可以看到控制台多了 components_ListItem_index_tsx.js?ts=timestamp 的文件，main.js?ts=timestamp也不包含ListItem组件的打包内容。如果用不到这个组件，组件的打包内容也就不会被加载。
 csr 场景下，推荐使用。ssr就算了
 
+### 9.3.mdx 在markdown中写jsx
+https://nextjs.org/docs/advanced-features/using-mdx#helpful-links 可以自定义 md 语法
+应用场景：组件库的文档
 
+### 9.4自定义server脚本
+https://nextjs.org/docs/advanced-features/custom-server
+
+### 9.5 实现ErrorBoundary错误兜底
+https://nextjs.org/docs/advanced-features/error-handling react本身支持 ErrorBoundary
+https://nextjs.org/docs/advanced-features/custom-error-page#404-page
+
+### 9.6 WebVitals衡量页面性能指标
+https://nextjs.org/docs/advanced-features/measuring-performance
 

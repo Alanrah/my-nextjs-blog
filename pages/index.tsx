@@ -86,7 +86,7 @@ const Home = (props: IProps) => {
                 }
             });
         },
-        [selectTag]
+        [selectTag, setSelectTag]
     );
 
     const localAllTag = {

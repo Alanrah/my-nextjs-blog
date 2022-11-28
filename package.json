@@ -4,12 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev-local": "node ./server.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint --fix"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
+    "@mdx-js/loader": "^2.1.5",
+    "@mdx-js/react": "^2.1.5",
+    "@next/mdx": "^13.0.5",
     "@uiw/react-md-editor": "3.6.0",
     "antd": "^4.24.1",
     "axios": "^1.1.3",
