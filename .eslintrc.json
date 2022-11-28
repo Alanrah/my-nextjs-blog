@@ -1,10 +1,10 @@
 {
     "extends": [
         "next/core-web-vitals",
-        "eslint:recommended",
-        "eslint-config-prettier",
-        "plugin:prettier/recommended",
-        "prettier"
+        // "eslint:recommended",
+        // "eslint-config-prettier",
+        // "plugin:prettier/recommended",
+        // "prettier"
     ],
     "rules": {
         "quotes": [
@@ -16,7 +16,6 @@
         ],
         "indent": ["error", 4],
         "semi": ["error", "always"],
-        "no-unused-vars": "warn",
-        "endOfLine": "auto"
+        "no-unused-vars": "warn"
     }
 }
