@@ -3,7 +3,7 @@ import {
     EXCEPTION_ERR,
 } from 'utils/err-code';
 import getDataSource from 'db/index';
-import { User, Articles, Tag } from 'db/entity';
+import { Articles, Tag } from 'db/entity';
 
 async function list(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<any>>) {
     // 文章分页，query的值都是string todo
@@ -23,10 +23,10 @@ async function list(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<a
 
         if (+tag_id) {
             articles = await articlesRepo.createQueryBuilder('article')
-            .leftJoinAndSelect("article.user", 'user')
-            .leftJoinAndSelect("article.tags", 'tags')
-            .where("tag_id = :id", { id: Number(tag_id), })
-            .getMany();
+                .leftJoinAndSelect('article.user', 'user')
+                .leftJoinAndSelect('article.tags', 'tags')
+                .where('tag_id = :id', { id: Number(tag_id), })
+                .getMany();
             // .find({
             //     relations: ['user', 'tags'],
             //     where: (qb: any) => {

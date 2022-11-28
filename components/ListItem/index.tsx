@@ -1,11 +1,5 @@
 import styles from './index.module.scss';
-import { Input, Modal, Button, message, Avatar } from 'antd';
-import { ChangeEvent, useState } from 'react';
-import CountDown from 'components/CountDown';
-import requestInstance from 'service/fetch';
-import { useStore } from 'store';
-// 使用useStore的组件，都用  observer 包裹一下，保证响应式
-import { observer } from 'mobx-react-lite';
+import { Avatar } from 'antd';
 import Link from 'next/link';
 import { EyeOutlined } from '@ant-design/icons';
 import { formatDistanceToNow } from 'date-fns';
@@ -38,7 +32,7 @@ const ListItem = (props: IProps) => {
                 <Avatar src={article.user.avatar} size={48}></Avatar>
             </div>
         </Link>
-    )
-}
+    );
+};
 
 export default ListItem;

@@ -80,8 +80,8 @@ const Login = (props: IProps) => {
     const handleOAuthGithub = () => {
         window.location.href = GithubCallbackUrl;
     };
-    // https://open.kuaishou.com/platform/openApi?menu=13 快手第三方登录文档
-    const handleOAuthKwai = () => { };
+    // https://open.kuaishou.com/platform/openApi?menu=13 快手第三方登录文档 todo
+    // const handleOAuthKwai = () => { };
     const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e?.target;
         setForm({

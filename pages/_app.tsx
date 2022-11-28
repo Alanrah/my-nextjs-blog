@@ -18,10 +18,10 @@ export default function App({initialValue, Component, pageProps}: IProps) {
                 <Layout>
                     <Component {...pageProps} />
                 </Layout>
-            )
+            );
         }
-    }
-     return (
+    };
+    return (
         <StoreProvider initialValue={initialValue}>
             {renderLayout()}
         </StoreProvider>

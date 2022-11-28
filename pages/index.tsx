@@ -39,8 +39,8 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
             articles: res?.data?.articles || [],
             tags:  res?.data?.tags || [],
         },
-    }
-}
+    };
+};
 
 // 从页面组件中直接使用 props 来获取 getServerSideProps 注入的 props
 const Home = (props: IProps) => {
@@ -54,7 +54,7 @@ const Home = (props: IProps) => {
     const handleSelect = (event: any) => {
         const { tagid } = event?.target?.dataset || {};
         setSelectTag(Number(tagid));
-    }
+    };
 
     useEffect(
         () => {
@@ -87,7 +87,7 @@ const Home = (props: IProps) => {
     const localAllTag = {
         id: -1,
         title: '全部',
-    }
+    };
 
     return (
         <div>
@@ -96,9 +96,9 @@ const Home = (props: IProps) => {
                     key={localAllTag?.id}
                     data-tagid={localAllTag?.id}
                     className={classNames(
-                    styles.tag,
-                    selectTag === localAllTag.id ? styles.active : ''
-                )}>
+                        styles.tag,
+                        selectTag === localAllTag.id ? styles.active : ''
+                    )}>
                     {localAllTag.title}
                 </div>
                 {
@@ -107,11 +107,11 @@ const Home = (props: IProps) => {
                             key={tag?.id}
                             data-tagid={tag?.id}
                             className={classNames(
-                            styles.tag,
-                            selectTag === tag.id ? styles.active : ''
-                        )}>
+                                styles.tag,
+                                selectTag === tag.id ? styles.active : ''
+                            )}>
                             {tag.title}
-                        </div>
+                        </div>;
                     })
                 }
             </div>
@@ -119,7 +119,7 @@ const Home = (props: IProps) => {
                 {
                     articles.length
                         ? articles?.map((article) => {
-                            return <ListItem article={article} key={article.id}/>
+                            return <ListItem article={article} key={article.id}/>;
                         })
                         : <Empty description={'文章列表为空'} />
                 }

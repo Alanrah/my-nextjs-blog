@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { NextPage } from 'next';
 import React from 'react';
 import Link from 'next/link';
 import { observer } from 'mobx-react-lite';
@@ -11,7 +11,7 @@ import {
 import ListItem from 'components/ListItem';
 import styles from './index.module.scss';
 import requestInstance from 'service/fetch';
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 import { useStore } from 'store';
 import { GetServerSideProps } from 'next';
 
@@ -36,8 +36,8 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
             userInfo: res?.data?.userInfo || {},
             articles: res?.data?.articles || {},
         },
-    }
-}
+    };
+};
 
 const User = (props: IProps) => {
     const { userInfo, articles = [] } = props;

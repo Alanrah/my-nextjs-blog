@@ -1,28 +1,28 @@
 // 问题： 编辑器用什么？支持 nextjs
 // https://www.npmjs.com/package/@uiw/react-md-editor
-import { NextPage } from "next";
-import React, { useEffect } from "react";
-import "@uiw/react-md-editor/markdown-editor.css";
-import "@uiw/react-markdown-preview/markdown.css";
-import dynamic from "next/dynamic";
+import { NextPage } from 'next';
+import React, { useEffect } from 'react';
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
+import dynamic from 'next/dynamic';
 import { MDEditorProps } from '@uiw/react-md-editor';
 // import * as commands from '@uiw/react-md-editor/esm/commands';
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent } from 'react';
 import styles from './index.module.scss';
 import { Input, Button, message, Select } from 'antd';
 import requestInstance from 'service/fetch';
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 import { useStore } from 'store';
 import { observer } from 'mobx-react-lite';
 
 const MDEditor: NextPage = dynamic<MDEditorProps>(
-    () => import("@uiw/react-md-editor"),
+    () => import('@uiw/react-md-editor'),
     { ssr: false }
 );
 
 const NewEditor: NextPage = () => {
-    const [content, setContent] = useState("");
-    const [title, setTitle] = useState("");
+    const [content, setContent] = useState('');
+    const [title, setTitle] = useState('');
     const [allTags, setAllTags] = useState<ITag[]>([]);
     const [tagIds, setTagIds] = useState<number[]>([]);
 
@@ -49,10 +49,10 @@ const NewEditor: NextPage = () => {
         } else {
             message.error(res.msg || '发布失败');
         }
-    }
+    };
     const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e?.target?.value);
-    }
+    };
     const getAllTags = async () => {
         const res = await requestInstance.get<any, BaseDataResponse<{followList: Array<ITag>, allList:  Array<ITag>}>>(
             '/api/tag/list',
@@ -63,7 +63,7 @@ const NewEditor: NextPage = () => {
         } else {
             message.error(res?.msg || '获取标签列表失败了');
         }
-    }
+    };
     useEffect(() => {
         getAllTags();
     }, []);
@@ -73,7 +73,7 @@ const NewEditor: NextPage = () => {
     };
     const handleSelectTag = (ids: number[]) => {
         setTagIds(ids);
-    }
+    };
 
     return (
         <div className={styles.container}>
@@ -98,14 +98,15 @@ const NewEditor: NextPage = () => {
                 <Button type="primary" className={styles.button} onClick={handlePublish}>发布</Button>
             </div>
             <MDEditor
+                // @ts-ignore
                 value={content}
                 onChange={setContent}
                 height={1080}
             />
         </div>
 
-    )
-}
+    );
+};
 // 问题：在编辑器页面，不希望显示顶部的导航栏 layOut 该怎么办？
 // 用属性 layout 确认是否要显示导航栏，并在 _app.tsx 中使用这个属性判断是否要展示导航栏
 (NewEditor as any).layout = null;

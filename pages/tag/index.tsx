@@ -1,12 +1,10 @@
-import { NextPage } from "next";
-import { message, Empty, Avatar, Input, Button, Tabs } from 'antd';
+import { NextPage } from 'next';
+import { message, Empty, Button, Tabs } from 'antd';
 import * as AntIcons from '@ant-design/icons'; // LikeOutlined, FireOutlined
 import requestInstance from 'service/fetch';
-import { useRouter } from 'next/router';
 import styles from './index.module.scss';
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'store';
-import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 // 标签新增管理能力不暴露给用户
 const Tag: NextPage = () => {
@@ -19,7 +17,7 @@ const Tag: NextPage = () => {
 
     const onChange = (key: string) => {
         setActive(key);
-    }
+    };
 
     const getTagsList = async() => {
         const res = await requestInstance.get<any, BaseDataResponse<{followList: Array<ITag>, allList:  Array<ITag>}>>(
@@ -32,11 +30,11 @@ const Tag: NextPage = () => {
         } else {
             message.error(res?.msg || '获取标签列表失败了');
         }
-    }
+    };
     // 不传递参数： useEffect不传递第二个参数会导致每次渲染都会运行useEffect
     // 传递空数组：仅在挂载和卸载的时候执行
     useEffect(
-        () => { getTagsList() },
+        () => { getTagsList(); },
         [userId],// 从未登录到登录状态，需要刷新
     );
 
@@ -54,14 +52,14 @@ const Tag: NextPage = () => {
         } else {
             message.error(res?.msg || '操作失败');
         }
-    }
+    };
 
     const handleUnFollow = async (tagId: number) => {
         submitFollow(tagId, false);
-    }
+    };
     const handleFollow = async (tagId: number) => {
         submitFollow(tagId, true);
-    }
+    };
 
     const Followed = () => {
         return (<div className={styles.tags}>
@@ -74,8 +72,8 @@ const Tag: NextPage = () => {
                             <div className={styles.title}>{tag.title}</div>
                             <div className={styles.title}>
                                 {tag.followCount}关注 {tag.articleCount} 文章</div>
-                                <Button onClick={() => handleUnFollow(tag.id)}>取消关注</Button>
-                        </div>
+                            <Button onClick={() => handleUnFollow(tag.id)}>取消关注</Button>
+                        </div>;
                     })
                     : <Empty className={styles.emptyMargin} description="暂无已关注标签"></Empty>)
                     : <Empty description="请先登录"></Empty>
@@ -86,20 +84,20 @@ const Tag: NextPage = () => {
         return (<div className={styles.tags}>
             {
                 allTags?.length
-                ? allTags.map(tag => {
-                    return <div className={styles.tagWrapper} key={tag.title}>
-                        {/* @ts-ignore */}
-                        <div>{AntIcons[tag?.icon].render()}</div>
-                        <div className={styles.title}>{tag.title}</div>
-                        <div className={styles.title}>
-                            {tag.followCount}关注 {tag.articleCount} 文章</div>
+                    ? allTags.map(tag => {
+                        return <div className={styles.tagWrapper} key={tag.title}>
+                            {/* @ts-ignore */}
+                            <div>{AntIcons[tag?.icon].render()}</div>
+                            <div className={styles.title}>{tag.title}</div>
+                            <div className={styles.title}>
+                                {tag.followCount}关注 {tag.articleCount} 文章</div>
                             <div>{
                                 tag?.users?.find(user => Number(userId) === Number(user.id))
                                     ? <Button onClick={() => handleUnFollow(tag.id)}>取消关注</Button>
                                     :<Button type="primary" onClick={() => handleFollow(tag.id)}>关注</Button>}</div>
-                    </div>
-                })
-                : <Empty description="暂无标签"></Empty>
+                        </div>;
+                    })
+                    : <Empty description="暂无标签"></Empty>
             }
         </div>);
     };

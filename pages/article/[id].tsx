@@ -1,7 +1,6 @@
 import { message, Empty, Avatar, Input, Button, Divider } from 'antd';
 import requestInstance from 'service/fetch';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import styles from './index.module.scss';
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'store';
@@ -31,8 +30,8 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
         props: {
             article: res?.data || {},
         },
-    }
-}
+    };
+};
 
 // 从页面组件中直接使用 props 来获取 getServerSideProps 注入的 props
 const Detail = (props: IProps) => {
@@ -48,7 +47,7 @@ const Detail = (props: IProps) => {
         const res = await requestInstance.post<{articleId: number, content: string}, BaseDataResponse<string>>('/api/comment/publish', {
             articleId: article.id,
             content: inputComment,
-        })
+        });
         if (res.code !== 0) {
             message.error(res.msg || '评论失败');
         } else {
@@ -61,12 +60,13 @@ const Detail = (props: IProps) => {
                     createTime: String(new Date()),
                     updateTime: String(new Date()),
                     user: store.user.userInfo as IUser,
+                    article: article,
                 },
             ].concat(comments);
             setComments(newComments);
             setInputComment('');
         }
-    }
+    };
 
     return (
         <div>
@@ -111,20 +111,20 @@ const Detail = (props: IProps) => {
                 <Divider></Divider>
                 <div className={styles.display}>
                     {
-                    comments?.length
-                        ? comments.map(comment => {
-                            return <div className={styles.wrapper} key={comment.id}>
-                                <Avatar src={comment?.user?.avatar} size={40}></Avatar>
-                                <div className={styles.info}>
-                                    <div className={styles.name}>
-                                        <div >{comment?.user?.nickname}</div>
-                                        <div className={styles.date}>{format(new Date(comment?.updateTime), 'yyyy-MM-dd hh:mm:ss')}</div>
+                        comments?.length
+                            ? comments.map(comment => {
+                                return <div className={styles.wrapper} key={comment.id}>
+                                    <Avatar src={comment?.user?.avatar} size={40}></Avatar>
+                                    <div className={styles.info}>
+                                        <div className={styles.name}>
+                                            <div >{comment?.user?.nickname}</div>
+                                            <div className={styles.date}>{format(new Date(comment?.updateTime), 'yyyy-MM-dd hh:mm:ss')}</div>
+                                        </div>
+                                        <div className={styles.content}>{comment?.content}</div>
                                     </div>
-                                    <div className={styles.content}>{comment?.content}</div>
-                                </div>
-                            </div>
-                        })
-                        : <Empty description={'评论列表为空'} />
+                                </div>;
+                            })
+                            : <Empty description={'评论列表为空'} />
                     }
                 </div>
             </div>

@@ -3,7 +3,7 @@ import {
     EXCEPTION_ERR,
 } from 'utils/err-code';
 import getDataSource from 'db/index';
-import { User, Articles, Comment } from 'db/entity';
+import { User, Articles } from 'db/entity';
 
 async function detail(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<any>>) {
     const { id } = req.query;

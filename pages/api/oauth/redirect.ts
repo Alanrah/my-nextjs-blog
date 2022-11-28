@@ -9,7 +9,7 @@ import {
 import { setCookie } from 'utils/cookie';
 import getDataSource from 'db/index';
 import { User, UserAuth } from 'db/entity';
-import { getGithubAccessTokenUrl, GithubUserPath, DefaultAvatar, GithubClientID } from 'utils/const';
+import { getGithubAccessTokenUrl, GithubUserPath, DefaultAvatar } from 'utils/const';
 import requestInstance from 'service/fetch';
 
 async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<any>>) {
@@ -30,7 +30,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
         {
             headers: {
                 accept: 'application/json'
-              }
+            }
         }
     );
     // 返回值是：
@@ -53,7 +53,7 @@ async function redirect(req: NextApiRequest, res: NextApiResponse<BaseDataRespon
             headers: {
                 accept: 'application/json',
                 Authorization: `token ${accessToken}`
-              }
+            }
         }
     );
     // 返回值是：

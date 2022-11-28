@@ -15,7 +15,7 @@ interface SMS_Type {
         dateCreated: string;
         smsMessageSid: string;
     };
-    statusMsg?: string;
+    statusMsg: string;
 }
 
 // 测试收到的短信：【云通讯】您使用的是云通讯短信模板，您的验证码是9735，请于5分钟内正确输入
@@ -34,7 +34,8 @@ async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataR
     // todo 开发环境就不请求验证码了
     let response = {
         statusCode: '000000',
-        templateSMS: { smsMessageSid: '8a483be8ec344a5ea2c857a8038fc095', dateCreated: '20221111163118' },
+        templateSMS: { smsMessageSid: '8a483be8ec344a5ea2c857a8038fc095', dateCreated: '20221111163118', },
+        statusMsg: ''
     };
     if (process.env.NODE_ENV !== 'development') {
         response = await requestInstance.post<any, SMS_Type>(
@@ -53,7 +54,7 @@ async function sedVerifyCode(req: NextApiRequest, res: NextApiResponse<BaseDataR
         );
     }
 
-    const { statusCode, templateSMS, statusMsg = '' } = response;
+    const { statusCode, statusMsg = '' } = response ;
     if (statusCode === '000000') {
         session.verifyCode = verifyCode;
         session.verifyExpireDate = new Date();

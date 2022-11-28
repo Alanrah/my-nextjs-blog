@@ -1,6 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { withIronSessionApiRoute } from 'iron-session/next';
-import { ironOptions } from 'config/index';
 import {
     EXCEPTION_ERR,
 } from 'utils/err-code';

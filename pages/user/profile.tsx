@@ -31,7 +31,7 @@ const UserProfile = () => {
             if (res?.code === 0) {
                 form.setFieldsValue(res?.data?.userInfo);
             } else {
-                message.error(res.msg)
+                message.error(res.msg);
             }
         });
     }, [form]);
@@ -41,7 +41,7 @@ const UserProfile = () => {
             if (res?.code === 0) {
                 message.success('修改成功');
                 store.user.setUserInfo({userId: res?.data?.id, nickname: res?.data?.nickname, avatar: res?.data?.avatar,});
-                push(`/user/${res?.data?.id}`)
+                push(`/user/${res?.data?.id}`);
             } else {
                 message.error(res?.msg || '修改失败');
             }

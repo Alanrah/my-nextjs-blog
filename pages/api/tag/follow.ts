@@ -3,7 +3,7 @@ import {
     EXCEPTION_ERR,
 } from 'utils/err-code';
 import getDataSource from 'db/index';
-import { User, Articles, Tag } from 'db/entity';
+import { User, Tag } from 'db/entity';
 import { ironOptions } from 'config/index';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { ISession } from 'pages/api/index';
