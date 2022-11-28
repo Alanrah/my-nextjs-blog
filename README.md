@@ -56,5 +56,18 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 * 2.yarn build，构建项目。构建产物，在根目录的 ./next 下面。
 * 3.云端部署在 https://vercel.com/alanrah/my-nextjs-blog ，访问地址是：https://my-nextjs-blog-pied.vercel.app/
 * 4.vercel有完整的CI/CD流程，push代码就会自动触发deploy
-* 5.ssg，编译阶段生成页面，适合于内容比较固定的静态页面，比如网站静态首页。。本项目以/user/:id 这个路径为示例。从打包结果来看，ssr的打包结果包含 /usr/[id]， 而ssg的打包结果包含了 /usr/1、/usr/1.fallback、/usr/2、/usr/2.fallback、/usr/3、/usr/3.fallback……
+* 5.ssg，编译阶段生成页面，适合于内容比较固定的静态页面，比如网站静态首页。。本项目以/user/:id 这个路径为示例。从打包结果来看，ssr的打包结果包含 /usr/[id]， 而ssg的打包结果包含了 /usr/1、/usr/1.fallback、/usr/2、/usr/2.fallback、/usr/3、/usr/3.fallback……/usr/[id].
+
+## 9.
+### 9.1.中间件
+https://nextjs.org/docs/advanced-features/middleware
+v13.0.0 Middleware can modify request headers, response headers, and send responses
+nextjs13 和 12 的中间件写法不一样，需要注意
+### 9.2 动态导入
+https://nextjs.org/docs/advanced-features/dynamic-import
+可以将组件动态引入。比如 首页的 ListItem 组件，直接引入（import ListItem from 'components/ListItem';），首页返回的打包内容（main.js?ts=timestamp）包含ListItem内容，也就是说一起打包进去了。
+动态异步引入 ListItem，该组件单独打包请求，可以看到控制台多了 components_ListItem_index_tsx.js?ts=timestamp 的文件，main.js?ts=timestamp也不包含ListItem组件的打包内容。如果用不到这个组件，组件的打包内容也就不会被加载。
+csr 场景下，推荐使用。ssr就算了
+
+
 

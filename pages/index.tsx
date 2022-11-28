@@ -2,15 +2,20 @@
 import { message, Empty } from 'antd';
 import requestInstance from 'service/fetch';
 import { GetServerSideProps } from 'next';
-import ListItem from 'components/ListItem';
+// import ListItem from 'components/ListItem';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import styles from './index.module.scss';
+import dynamic from 'next/dynamic';
 
 interface IProps {
     articles: IArticle[],
     tags: ITag[],
 }
+
+const DynamicListItem = dynamic(() => import('components/ListItem'), {
+    suspense: true,
+});
 
 // 首页文章列表数据预获取，ssr首屏
 // https://www.nextjs.cn/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
@@ -119,7 +124,9 @@ const Home = (props: IProps) => {
                 {
                     articles.length
                         ? articles?.map((article) => {
-                            return <ListItem article={article} key={article.id}/>;
+                            return (<Suspense fallback={'Loading...'} key={article.id}>
+                                <DynamicListItem article={article}/>
+                            </Suspense>);
                         })
                         : <Empty description={'文章列表为空'} />
                 }

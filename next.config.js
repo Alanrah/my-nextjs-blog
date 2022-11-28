@@ -5,6 +5,9 @@ const nextConfig = {
     images: {
         domains: [],
     },
+    experimental: {
+        allowMiddlewareResponseBody: true,
+    },
 };
 const removeImports = require('next-remove-imports')();
 module.exports = removeImports(nextConfig);
