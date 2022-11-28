@@ -55,5 +55,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 * 1.新建线上数据库，同步新建表，更新本地 .env.production
 * 2.yarn build，构建项目。构建产物，在根目录的 ./next 下面。
 * 3.云端部署在 https://vercel.com/alanrah/my-nextjs-blog ，访问地址是：https://my-nextjs-blog-pied.vercel.app/
-
+* 4.vercel有完整的CI/CD流程，push代码就会自动触发deploy
+* 5.ssg，编译阶段生成页面，适合于内容比较固定的静态页面，比如网站静态首页。。本项目以/user/:id 这个路径为示例。从打包结果来看，ssr的打包结果包含 /usr/[id]， 而ssg的打包结果包含了 /usr/1、/usr/1.fallback、/usr/2、/usr/2.fallback、/usr/3、/usr/3.fallback……
 
