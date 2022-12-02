@@ -9,3 +9,5 @@ export const getGithubAccessTokenUrl = (requestToken: string) => {
 }
 
 export const GithubUserPath = 'https://api.github.com/user';
+
+export const PageSize = 6;

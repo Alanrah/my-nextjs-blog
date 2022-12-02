@@ -22,4 +22,11 @@
       background-color: #007fff;
       color: #fff;
     }
+}
+.height{
+  overflow-y: hidden;
+  .pagination{
+    text-align: center;
+    margin: 20px 0px;
   }
+}

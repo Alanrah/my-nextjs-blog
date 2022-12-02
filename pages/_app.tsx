@@ -17,27 +17,26 @@ export function reportWebVitals(mertic: NextWebVitalsMetric) {
         // console.log('mertic', mertic);
     }
 
-    switch (mertic.name)
-    {
-    case 'FCP':
-        console.log('FCP', mertic);
-        break;
-    case 'LCP':
-        console.log('LCP', mertic);
-        break;
-    case 'CLS':
-        console.log('CLS', mertic);
-        break;
-    case 'FID':
-        console.log('FID', mertic);
-        break;
-    case 'TTFB':
-        console.log('TTFB', mertic);
-        break;
-    default:
-        break;
-    }
-console.log(11111)
+    // switch (mertic.name)
+    // {
+    // case 'FCP':
+    //     console.log('FCP', mertic);
+    //     break;
+    // case 'LCP':
+    //     console.log('LCP', mertic);
+    //     break;
+    // case 'CLS':
+    //     console.log('CLS', mertic);
+    //     break;
+    // case 'FID':
+    //     console.log('FID', mertic);
+    //     break;
+    // case 'TTFB':
+    //     console.log('TTFB', mertic);
+    //     break;
+    // default:
+    //     break;
+    // }
     const body = JSON.stringify(mertic);
     const url = 'https://xxxx.com';
     // 简单的埋点

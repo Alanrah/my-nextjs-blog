@@ -4,10 +4,11 @@ import {
 } from 'utils/err-code';
 import getDataSource from 'db/index';
 import { Articles, Tag } from 'db/entity';
+import {PageSize} from 'utils/const';
 
 async function list(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<any>>) {
     // 文章分页，query的值都是string todo
-    const { page = 1, pageSize = 20, tag_id = 0 } = req.query || {};
+    const { page = 1, pageSize = PageSize, tag_id = 0 } = req.query || {};
     // 需要从数据库中把文章和user信息进行绑定
     const db = await getDataSource();
     const articlesRepo = db.getRepository(Articles);
@@ -16,6 +17,7 @@ async function list(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<a
     try {
 
         let articles = [];
+        let total = 0;
 
         const tags = await tagRepo.find({
             relations: ['users'],
@@ -23,9 +25,12 @@ async function list(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<a
 
         if (+tag_id) {
             articles = await articlesRepo.createQueryBuilder('article')
-                .leftJoinAndSelect('article.user', 'user')
+                .leftJoinAndSelect('article.user', 'user') //  第一个参数是你要加载的关系，第二个参数是你为此关系的表分配的别名
                 .leftJoinAndSelect('article.tags', 'tags')
+                .orderBy('article.updateTime', 'DESC')
                 .where('tag_id = :id', { id: Number(tag_id), })
+                .skip(((+page) - 1) * (+pageSize))
+                .take(+pageSize)
                 .getMany();
             // .find({
             //     relations: ['user', 'tags'],
@@ -35,10 +40,19 @@ async function list(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<a
             //         });
             //     },
             // });
+            // todo
+            // total = await articlesRepo.createQueryBuilder('article').where('tag_id = :id', { id: Number(tag_id), }).getCount();
+            console.log('x2-----------------------------------------------------------------\n', total)
         } else {
-            articles = await articlesRepo.find({
-                relations: ['user', 'tags'],
-            });
+            articles = await articlesRepo.createQueryBuilder('article')
+                .leftJoinAndSelect('article.user', 'user') //  第一个参数是你要加载的关系，第二个参数是你为此关系的表分配的别名
+                .leftJoinAndSelect('article.tags', 'tags')
+                .orderBy('article.updateTime', 'DESC')
+                .skip(((+page) - 1) * (+pageSize))
+                .take(+pageSize)
+                .getMany();
+                total = await articlesRepo.createQueryBuilder('article').getCount();
+            console.log('x1----------------------------------------------------------------\n', total)
         }
 
         res.status(200).json({
@@ -47,6 +61,8 @@ async function list(req: NextApiRequest, res: NextApiResponse<BaseDataResponse<a
             data: {
                 articles,
                 tags,
+                total,
+                page,
             },
         });
     } catch (error) {

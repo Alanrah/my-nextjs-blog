@@ -7,10 +7,14 @@ import classNames from 'classnames';
 import { useEffect, useState, Suspense } from 'react';
 import styles from './index.module.scss';
 import dynamic from 'next/dynamic';
+import { Pagination } from 'antd';
+import {PageSize} from 'utils/const';
 
 interface IProps {
     articles: IArticle[],
     tags: ITag[],
+    page: number,
+    total: number,
 }
 
 const DynamicListItem = dynamic(() => import('components/ListItem'), {
@@ -25,13 +29,10 @@ const DynamicListItem = dynamic(() => import('components/ListItem'), {
 // getServerSideProps 中的数据将会被放到全局的 _NEXT_DATA 中，用于 hydrate
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
     // 需要注意 getServerSideProps 为 node server 端代码，无法在其中直接请求内部 API，因为会找不到地址，必须加origin
-    const res = await requestInstance.get<any, BaseDataResponse<{
-        articles: Array<IArticle>,
-        tags: Array<ITag>
-    }>>(`http://${context.req.headers.host}/api/article/list`, {
+    const res = await requestInstance.get<any, BaseDataResponse<IProps>>(`http://${context.req.headers.host}/api/article/list`, {
         params: {
             page: 1,
-            pageSize: 20,
+            pageSize: PageSize,
         }
     });
 
@@ -43,6 +44,8 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
         props: {
             articles: res?.data?.articles || [],
             tags:  res?.data?.tags || [],
+            page: res?.data?.page || 1,
+            total: res?.data?.total || 10
         },
     };
 };
@@ -52,50 +55,57 @@ const Home = (props: IProps) => {
     const [selectTag, setSelectTag] = useState(-1);
     const [articles, setArticles] = useState(props.articles || []);
     const [tags, setTags] = useState(props.tags || []);
+    const [currPage, setCurrPage] = useState(props.page);
+    const [total, setTotal] = useState(props.total);
+
     // 这个也可以 但是此处用了 datatset 传递数据
     // const handleClick = (tagId: number) => {
     //     setSelectTag(tagId)
     // }
-    const handleSelect = (event: any) => {
-        const { tagid } = event?.target?.dataset || {};
-        setSelectTag(Number(tagid));
+    const handleSelect = async (event: any) => {
+        setSelectTag(Number(event?.target?.dataset?.tagid));
+        setCurrPage(1);
     };
 
-    useEffect(
-        () => {
-            let url = '';
-            if(selectTag <= 0) {
-                // 请求全部
-                url = '/api/article/list';
-            } else {
-                url = `/api/article/list?tag_id=${selectTag}`;
+    const clientAppendData = () => {
+        let url = '';
+        if(selectTag <= 0) {
+            // 请求全部
+            url = '/api/article/list';
+        } else {
+            url = `/api/article/list?tag_id=${selectTag}`;
+        }
+        requestInstance.get<any, BaseDataResponse<IProps>>(url, {
+            params: {
+                page: currPage,
+                pageSize: PageSize,
             }
-            requestInstance.get<any, BaseDataResponse<{
-                articles: Array<IArticle>,
-                tags?: Array<ITag>
-            }>>(url, {
-                params: {
-                    page: 1,
-                    pageSize: 20,
-                }
-            }).then((res) => {
-                if (res.code !== 0) {
-                    message.error(res.msg || '获取文章列表失败');
-                } else {
-                    setArticles(res.data.articles);
-                }
-            });
-        },
-        [selectTag, setSelectTag]
-    );
+        }).then((res) => {
+            if (res.code !== 0) {
+                message.error(res.msg || '获取文章列表失败');
+            } else {
+                setTotal(res.data.total);
+                setArticles(res.data.articles);
+            }
+        });
+    }
+    const onChange = async (page: number) => {
+        setCurrPage(page);
+        await clientAppendData();
+    }
 
     const localAllTag = {
         id: -1,
         title: '全部',
     };
 
+    useEffect(
+        () => clientAppendData(),
+        [selectTag, currPage]
+    );
+
     return (
-        <div>
+        <div className={styles.height}>
             <div className={styles.tags} onClick={handleSelect}>
                 <div
                     key={localAllTag?.id}
@@ -120,7 +130,7 @@ const Home = (props: IProps) => {
                     })
                 }
             </div>
-            <div className="content-layout">
+            <div className="content-layout" id="Container">
                 {
                     articles.length
                         ? articles?.map((article) => {
@@ -131,6 +141,7 @@ const Home = (props: IProps) => {
                         : <Empty description={'文章列表为空'} />
                 }
             </div>
+            <Pagination className={styles.pagination} defaultCurrent={1} total={total}  onChange={onChange}/>
         </div>
     );
 };
