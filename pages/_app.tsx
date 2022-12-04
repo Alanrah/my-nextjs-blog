@@ -37,14 +37,14 @@ export function reportWebVitals(mertic: NextWebVitalsMetric) {
     // default:
     //     break;
     // }
-    const body = JSON.stringify(mertic);
-    const url = 'https://xxxx.com';
-    // 简单的埋点
-    if (navigator.sendBeacon) {
-        navigator.sendBeacon(url, body);
-    } else {
-        fetch(url, { body, method: 'POST', keepalive: true });
-    }
+    // const body = JSON.stringify(mertic);
+    // const url = 'https://xxxx.com';
+    // // 简单的埋点
+    // if (navigator.sendBeacon) {
+    //     navigator.sendBeacon(url, body);
+    // } else {
+    //     fetch(url, { body, method: 'POST', keepalive: true });
+    // }
 }
 
 export default function App({initialValue, Component, pageProps}: IProps) {

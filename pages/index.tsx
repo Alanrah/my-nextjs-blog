@@ -91,7 +91,6 @@ const Home = (props: IProps) => {
     }
     const onChange = async (page: number) => {
         setCurrPage(page);
-        await clientAppendData();
     }
 
     const localAllTag = {
@@ -141,7 +140,7 @@ const Home = (props: IProps) => {
                         : <Empty description={'文章列表为空'} />
                 }
             </div>
-            <Pagination className={styles.pagination} defaultCurrent={1} total={total}  onChange={onChange}/>
+            <Pagination className={styles.pagination} defaultCurrent={1} pageSize={PageSize} total={total}  onChange={onChange}/>
         </div>
     );
 };
